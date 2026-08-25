@@ -21,7 +21,7 @@ The current delivery is an open-source MVP. Native Windows QA, target NAS hardwa
 - [x] Official desktop builds support application-wide credentials without requiring users to enter an API key or shared secret
 - [x] Missing, partial and user-provided application credentials are handled without overwriting existing configuration
 - [x] Returning from browser authorization automatically attempts to complete the user's individual Last.fm session
-- [ ] Both GitHub Actions repository secrets are configured before building an official bundled-credential installer
+- [x] Both GitHub Actions repository secrets are configured for official bundled-credential installers
 - [x] Source-built desktop apps and NAS preserve the bring-your-own-application option
 - [x] Public security documentation discloses that a shared secret embedded in a native installer is extractable
 
@@ -64,6 +64,7 @@ The current delivery is an open-source MVP. Native Windows QA, target NAS hardwa
 ## Chrome extension
 
 - [x] Manifest V3 production build and ZIP integrity
+- [x] Chrome Web Store ZIP excludes the fixed development key without changing the unpacked local extension ID
 - [x] Fixed development ID `nocefljecnigpgfgalgjefcigeidoglj` matches the desktop allowlist
 - [x] Install-time permissions exclude YouTube site access; optional Cookie access is limited to `music.youtube.com` plus the required parent Cookie domain `youtube.com`, excludes other subdomains/content scripts, and is user-revocable
 - [x] One-time unpacked-extension load in Chrome
