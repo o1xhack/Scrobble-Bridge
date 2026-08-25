@@ -11,11 +11,11 @@
     "format": "prettier --check --ignore-path ../../.prettierignore ."
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
-    "@types/chrome": "^0.1.36",
+    "@types/node": "^26.2.0",
+    "@types/chrome": "^0.2.7",
     "prettier": "^3.6.2",
-    "typescript": "^6.0.3",
-    "vite": "^8.2.1",
-    "vitest": "^4.1.10"
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
   }
 }

@@ -12,16 +12,16 @@
   },
   "dependencies": {
     "@scrobble-bridge/ui": "workspace:*",
-    "svelte": "^5.56.9"
+    "svelte": "^5.56.10"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^7.3.0",
     "@tsconfig/svelte": "^5.0.6",
     "prettier": "^3.6.2",
-    "prettier-plugin-svelte": "^3.4.0",
+    "prettier-plugin-svelte": "^4.1.1",
     "svelte-check": "^4.3.2",
-    "typescript": "^6.0.3",
-    "vite": "^8.2.1",
-    "vitest": "^4.1.10"
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
   }
 }
