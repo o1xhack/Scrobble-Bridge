@@ -27,13 +27,13 @@ Scrobble Bridge 的 Chrome 扩展目前支持开发者模式安装。以下内�
 
 ## 正式扩展 ID 与桌面安装包
 
-开发版使用固定 ID `nocefljecnigpgfgalgjefcigeidoglj`。Chrome Web Store 为正式条目确定 ID 后，需要把正式 ID 设置为 GitHub 仓库变量 `SCROBBLE_PRODUCTION_EXTENSION_ID`，然后重新构建桌面安装包。
+开发版使用固定 ID `nocefljecnigpgfgalgjefcigeidoglj`。运行 `pnpm --filter @scrobble-bridge/extension package:store` 会在 `target/scrobble-bridge-extension-1.0.0.zip` 生成商店专用 ZIP：只从商店包中移除开发环境的固定公钥，保留 `apps/extension/dist` 里的开发版 ID 和现有本地 Chrome 连接。首次上传后由 Chrome Web Store 分配正式扩展 ID；将该 ID 设置为 GitHub 仓库变量 `SCROBBLE_PRODUCTION_EXTENSION_ID`，然后重新构建桌面安装包。
 
 桌面构建会拒绝不是 32 位 `a`–`p` 字符的值。最终 Chrome Native Messaging manifest 同时允许固定开发扩展和经过校验的正式扩展；不能使用通配 origin，也不能只上传扩展而不更新桌面安装包白名单。
 
 ## 提交前自查
 
-- `pnpm --filter @scrobble-bridge/extension build` 成功。
+- `pnpm --filter @scrobble-bridge/extension package:store` 成功，商店 ZIP 不包含开发环境的 `manifest.key`。
 - ZIP 包含 Manifest V3、后台 service worker、popup、图标和中英文 locale。
 - 商店单一用途说明、权限理由和隐私政策与当前代码一致。
 - 正式扩展 ID 已写入仓库变量，并通过桌面安装包白名单验证。

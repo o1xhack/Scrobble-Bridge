@@ -6,7 +6,7 @@ The extension asks for no YouTube site access at installation. When the user cli
 
 Chrome may be closed after a successful refresh. The App keeps running and can use the stored snapshot until Google invalidates it. A closed browser cannot refresh a changed or expired Cookie; opening and signing in to YouTube Music is the recovery action.
 
-The unpacked development manifest has a fixed public key, producing extension ID `nocefljecnigpgfgalgjefcigeidoglj`. After Chrome Web Store assigns a production ID, set the GitHub repository variable `SCROBBLE_PRODUCTION_EXTENSION_ID` before building the desktop App so the generated Native Messaging manifest allowlists both exact IDs. The build rejects malformed production IDs; wildcard extension origins are not supported. Store listing copy and permission justifications are documented in [Chrome Web Store preparation](chrome-web-store.md).
+The unpacked development manifest has a fixed public key, producing extension ID `nocefljecnigpgfgalgjefcigeidoglj`. Run `pnpm --filter @scrobble-bridge/extension package:store` to generate a Chrome Web Store ZIP without that development-only key; the original unpacked development build keeps its fixed ID and current Native Messaging connection. After Chrome Web Store assigns a production ID, set the GitHub repository variable `SCROBBLE_PRODUCTION_EXTENSION_ID` before building the desktop App so the generated Native Messaging manifest allowlists both exact IDs. The build rejects malformed production IDs; wildcard extension origins are not supported. Store listing copy and permission justifications are documented in [Chrome Web Store preparation](chrome-web-store.md).
 
 ## NAS mode
 

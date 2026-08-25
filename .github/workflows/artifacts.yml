@@ -160,10 +160,9 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter @scrobble-bridge/extension build
-      - run: cd apps/extension/dist && zip -r ../../../scrobble-bridge-extension-1.0.0.zip .
+      - run: pnpm --filter @scrobble-bridge/extension package:store
       - uses: actions/upload-artifact@v7
         with:
           name: scrobble-bridge-chrome-extension
-          path: scrobble-bridge-extension-1.0.0.zip
+          path: target/scrobble-bridge-extension-1.0.0.zip
           if-no-files-found: error
