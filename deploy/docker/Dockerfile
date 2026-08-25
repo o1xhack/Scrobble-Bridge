@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.8
-FROM --platform=$BUILDPLATFORM node:24-bookworm-slim AS web-builder
+FROM --platform=$BUILDPLATFORM node:25-bookworm-slim AS web-builder
 WORKDIR /source
 RUN corepack enable && corepack prepare pnpm@10.34.5 --activate
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
@@ -10,7 +10,7 @@ COPY apps/web apps/web
 COPY packages/ui packages/ui
 RUN pnpm --filter @scrobble-bridge/web build
 
-FROM --platform=$BUILDPLATFORM rust:1.94-bookworm AS rust-builder
+FROM --platform=$BUILDPLATFORM rust:1.97-bookworm AS rust-builder
 ARG TARGETARCH
 WORKDIR /source
 # Debian security updates should remain installable across both release architectures;
