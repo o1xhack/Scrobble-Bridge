@@ -1,0 +1,25 @@
+[package]
+name = "ytmusic-client"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+chrono.workspace = true
+regex.workspace = true
+reqwest.workspace = true
+scrobble-core = { version = "1.0.0", path = "../scrobble-core" }
+serde.workspace = true
+serde_json.workspace = true
+sha1.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+axum.workspace = true
+tokio.workspace = true
+
+[lints]
+workspace = true

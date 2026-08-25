@@ -1,0 +1,15 @@
+[package]
+name = "scrobble-keyring"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+keyring.workspace = true
+scrobble-storage = { version = "1.0.0", path = "../scrobble-storage" }
+
+[lints]
+workspace = true

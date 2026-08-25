@@ -1,0 +1,17 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capabilities for the main Scrobble Bridge window",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "autostart:default",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        { "url": "https://www.last.fm/" },
+        { "url": "https://www.last.fm/api/auth/*" }
+      ]
+    }
+  ]
+}

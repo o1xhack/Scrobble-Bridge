@@ -1,0 +1,157 @@
+{
+  "contents": {
+    "singleColumnBrowseResultsRenderer": {
+      "tabs": [
+        {
+          "tabRenderer": {
+            "content": {
+              "sectionListRenderer": {
+                "contents": [
+                  {
+                    "musicShelfRenderer": {
+                      "contents": [
+                        {
+                          "musicResponsiveListItemRenderer": {
+                            "playlistItemData": {
+                              "videoId": "new-video"
+                            },
+                            "flexColumns": [
+                              {
+                                "musicResponsiveListItemFlexColumnRenderer": {
+                                  "text": {
+                                    "runs": [
+                                      {
+                                        "text": "Newest Song"
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "musicResponsiveListItemFlexColumnRenderer": {
+                                  "text": {
+                                    "runs": [
+                                      {
+                                        "text": "First Artist",
+                                        "navigationEndpoint": {
+                                          "browseEndpoint": {
+                                            "browseEndpointContextSupportedConfigs": {
+                                              "browseEndpointContextMusicConfig": {
+                                                "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "text": " • "
+                                      },
+                                      {
+                                        "text": "Guest Artist",
+                                        "navigationEndpoint": {
+                                          "browseEndpoint": {
+                                            "browseEndpointContextSupportedConfigs": {
+                                              "browseEndpointContextMusicConfig": {
+                                                "pageType": "MUSIC_PAGE_TYPE_ARTIST"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      {
+                                        "text": " • "
+                                      },
+                                      {
+                                        "text": "First Album",
+                                        "navigationEndpoint": {
+                                          "browseEndpoint": {
+                                            "browseEndpointContextSupportedConfigs": {
+                                              "browseEndpointContextMusicConfig": {
+                                                "pageType": "MUSIC_PAGE_TYPE_ALBUM"
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ],
+                            "fixedColumns": [
+                              {
+                                "musicResponsiveListItemFixedColumnRenderer": {
+                                  "text": {
+                                    "runs": [
+                                      {
+                                        "text": "4:05"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "musicResponsiveListItemRenderer": {
+                            "playlistItemData": {
+                              "videoId": "old-video"
+                            },
+                            "flexColumns": [
+                              {
+                                "musicResponsiveListItemFlexColumnRenderer": {
+                                  "text": {
+                                    "runs": [
+                                      {
+                                        "text": "Older Song"
+                                      }
+                                    ]
+                                  }
+                                }
+                              },
+                              {
+                                "musicResponsiveListItemFlexColumnRenderer": {
+                                  "text": {
+                                    "runs": [
+                                      {
+                                        "text": "Second Artist"
+                                      },
+                                      {
+                                        "text": " • "
+                                      },
+                                      {
+                                        "text": "Second Album"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ],
+                            "fixedColumns": [
+                              {
+                                "musicResponsiveListItemFixedColumnRenderer": {
+                                  "text": {
+                                    "runs": [
+                                      {
+                                        "text": "3:01"
+                                      }
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "contents": [
+    {
+      "musicResponsiveListItemRenderer": {
+        "playlistItemData": { "videoId": "repeat-new" },
+        "flexColumns": [
+          { "musicResponsiveListItemFlexColumnRenderer": { "text": { "runs": [{ "text": "夜空中最亮的星" }] } } },
+          { "musicResponsiveListItemFlexColumnRenderer": { "text": { "runs": [{
+            "text": "逃跑计划官方频道",
+            "navigationEndpoint": { "browseEndpoint": { "browseEndpointContextSupportedConfigs": { "browseEndpointContextMusicConfig": { "pageType": "MUSIC_PAGE_TYPE_USER_CHANNEL" } } } }
+          }] } } }
+        ],
+        "fixedColumns": [{ "musicResponsiveListItemFixedColumnRenderer": { "text": { "runs": [{ "text": "4:12" }] } } }]
+      }
+    },
+    {
+      "musicResponsiveListItemRenderer": {
+        "playlistItemData": { "videoId": "repeat-old" },
+        "flexColumns": [
+          { "musicResponsiveListItemFlexColumnRenderer": { "text": { "runs": [{ "text": "夜空中最亮的星" }] } } },
+          { "musicResponsiveListItemFlexColumnRenderer": { "text": { "runs": [{
+            "text": "逃跑计划官方频道",
+            "navigationEndpoint": { "browseEndpoint": { "browseEndpointContextSupportedConfigs": { "browseEndpointContextMusicConfig": { "pageType": "MUSIC_PAGE_TYPE_USER_CHANNEL" } } } }
+          }] } } }
+        ],
+        "fixedColumns": [{ "musicResponsiveListItemFixedColumnRenderer": { "text": { "runs": [{ "text": "4:12" }] } } }]
+      }
+    }
+  ]
+}

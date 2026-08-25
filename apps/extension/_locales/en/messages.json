@@ -1,0 +1,11 @@
+{
+  "extensionName": {
+    "message": "Scrobble Bridge: YouTube Music → Last.fm"
+  },
+  "extensionDescription": {
+    "message": "Keep YouTube Music connected to Scrobble Bridge for private Last.fm listening-history sync."
+  },
+  "extensionTitle": {
+    "message": "Scrobble Bridge: YouTube Music → Last.fm"
+  }
+}

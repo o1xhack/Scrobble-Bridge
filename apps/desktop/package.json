@@ -1,0 +1,36 @@
+{
+  "name": "@scrobble-bridge/desktop",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:tauri-assets": "vite build && node scripts/prepare-sidecar.mjs",
+    "bundle:mac": "node scripts/build-macos.mjs",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "test": "vitest run --passWithNoTests",
+    "format": "prettier --check --ignore-path ../../.prettierignore .",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@icons-pack/svelte-simple-icons": "^7.2.0",
+    "@scrobble-bridge/ui": "workspace:*",
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/plugin-autostart": "^2.5.1",
+    "@tauri-apps/plugin-opener": "^2.5.4",
+    "phosphor-svelte": "^3.1.0",
+    "svelte": "^5.56.9"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.3.0",
+    "@tauri-apps/cli": "^2.11.4",
+    "@tsconfig/svelte": "^5.0.6",
+    "prettier": "^3.6.2",
+    "prettier-plugin-svelte": "^3.4.0",
+    "svelte-check": "^4.7.6",
+    "typescript": "^6.0.3",
+    "vite": "^8.2.1",
+    "vitest": "^4.1.10"
+  }
+}

@@ -1,0 +1,32 @@
+name: scrobble-bridge
+
+services:
+  scrobble-bridge:
+    image: ghcr.io/o1xhack/scrobble-bridge:1.0.0
+    build:
+      context: ../..
+      dockerfile: deploy/docker/Dockerfile
+    restart: unless-stopped
+    stop_grace_period: 30s
+    user: "11001:11001"
+    pids_limit: 128
+    ports:
+      - "8787:8787"
+    environment:
+      SCROBBLE_BIND: 0.0.0.0:8787
+      SCROBBLE_DATA_DIR: /data
+      SCROBBLE_WEB_DIR: /app/web
+      SCROBBLE_SYNC_INTERVAL_SECONDS: 600
+      RUST_LOG: info
+    volumes:
+      - scrobble-data:/data
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  scrobble-data:

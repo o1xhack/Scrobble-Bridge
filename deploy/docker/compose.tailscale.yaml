@@ -1,0 +1,12 @@
+# Optional overlay for users who already run a Tailscale sidecar or trusted
+# reverse proxy. The daemon remains HTTP-only inside this private network;
+# publish it to the extension only through an HTTPS endpoint you trust.
+services:
+  scrobble-bridge:
+    ports: []
+    networks:
+      - scrobble-private
+
+networks:
+  scrobble-private:
+    internal: true

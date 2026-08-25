@@ -1,0 +1,8 @@
+{
+  "build": {
+    "beforeBuildCommand": "pnpm build:tauri-assets"
+  },
+  "bundle": {
+    "externalBin": ["binaries/scrobble-native-host"]
+  }
+}

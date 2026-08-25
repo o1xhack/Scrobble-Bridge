@@ -1,0 +1,150 @@
+:root {
+  color: #14231d;
+  font:
+    14px Inter,
+    ui-sans-serif,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  background: #f7faf8;
+  margin: 0;
+  width: 360px;
+}
+main {
+  padding: 18px;
+}
+header {
+  align-items: center;
+  border-bottom: 1px solid #dfe7e2;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 15px;
+}
+header > span {
+  align-items: center;
+  background: #14231d;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  font-size: 11px;
+  font-weight: 800;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+header .identity {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+}
+header small {
+  color: #64736c;
+}
+section {
+  display: grid;
+  gap: 11px;
+  margin: 12px 0;
+}
+.account-detection {
+  background: white;
+  border: 1px solid #dfe7e2;
+  border-radius: 8px;
+  display: grid;
+  gap: 3px;
+  padding: 10px;
+}
+.account-detection span {
+  color: #64736c;
+  font-size: 11px;
+  font-weight: 700;
+}
+.account-detection strong {
+  font-size: 13px;
+}
+label {
+  color: #64736c;
+  display: grid;
+  font-size: 12px;
+  font-weight: 700;
+  gap: 5px;
+}
+input,
+select {
+  background: white;
+  border: 1px solid #ccd8d0;
+  border-radius: 8px;
+  color: #14231d;
+  font: inherit;
+  padding: 9px 10px;
+}
+.language {
+  align-items: end;
+  display: grid;
+  gap: 3px;
+}
+.language span {
+  font-size: 10px;
+  font-weight: 600;
+}
+.language select {
+  font-size: 11px;
+  padding: 5px 6px;
+}
+input:focus,
+select:focus {
+  border-color: #145f47;
+  outline: 3px solid rgba(20, 95, 71, 0.1);
+}
+button {
+  background: transparent;
+  border: 1px solid #ccd8d0;
+  border-radius: 8px;
+  color: #14231d;
+  font: inherit;
+  font-weight: 750;
+  padding: 10px;
+  width: 100%;
+}
+button.primary {
+  background: #145f47;
+  border-color: #145f47;
+  color: white;
+  margin-top: 4px;
+}
+button.quiet {
+  border: 0;
+  color: #64736c;
+  font-size: 11px;
+  margin-top: 7px;
+  padding: 6px;
+  text-decoration: underline;
+}
+button.danger {
+  border-color: #d7aaaa;
+  color: #8f2929;
+}
+button:disabled {
+  opacity: 0.5;
+}
+.note {
+  color: #64736c;
+  font-size: 11px;
+  line-height: 1.45;
+  margin: 12px 2px 0;
+}
+#message {
+  color: #a13131;
+  font-size: 12px;
+  line-height: 1.4;
+  margin: 9px 2px 0;
+}
+[hidden] {
+  display: none !important;
+}

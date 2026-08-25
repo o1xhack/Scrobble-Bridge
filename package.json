@@ -1,0 +1,20 @@
+{
+  "name": "scrobble-bridge",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": ">=24"
+  },
+  "pnpm": {
+    "overrides": {
+      "cookie": "^0.7.2"
+    }
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "check": "pnpm -r check",
+    "test": "pnpm -r test",
+    "format": "pnpm -r format"
+  }
+}

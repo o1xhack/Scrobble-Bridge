@@ -1,0 +1,18 @@
+[package]
+name = "scrobble-native-host"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+interprocess.workspace = true
+scrobble-ipc = { version = "1.0.0", path = "../scrobble-ipc" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[lints]
+workspace = true

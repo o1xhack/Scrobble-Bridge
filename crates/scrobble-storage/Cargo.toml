@@ -1,0 +1,26 @@
+[package]
+name = "scrobble-storage"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+base64.workspace = true
+chacha20poly1305.workspace = true
+chrono.workspace = true
+rand.workspace = true
+rusqlite.workspace = true
+scrobble-core = { version = "1.0.0", path = "../scrobble-core" }
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+
+[lints]
+workspace = true

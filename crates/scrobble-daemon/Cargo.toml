@@ -1,0 +1,37 @@
+[package]
+name = "scrobble-daemon"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+axum.workspace = true
+base64.workspace = true
+chrono.workspace = true
+directories.workspace = true
+hmac.workspace = true
+lastfm-client = { version = "1.0.0", path = "../lastfm-client" }
+rand.workspace = true
+scrobble-core = { version = "1.0.0", path = "../scrobble-core" }
+scrobble-engine = { version = "1.0.0", path = "../scrobble-engine" }
+scrobble-storage = { version = "1.0.0", path = "../scrobble-storage" }
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tower-http.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+uuid.workspace = true
+ytmusic-client = { version = "1.0.0", path = "../ytmusic-client" }
+
+[dev-dependencies]
+tempfile.workspace = true
+tower.workspace = true
+
+[lints]
+workspace = true
