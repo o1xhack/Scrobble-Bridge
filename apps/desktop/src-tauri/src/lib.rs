@@ -3,7 +3,7 @@ use std::{
     io::{BufRead, BufReader, Read, Write},
     sync::Arc,
     thread,
-    time::{Duration, Instant},
+    time::{Duration, Instant, SystemTime},
 };
 
 use interprocess::local_socket::{ListenerOptions, traits::ListenerExt as _};
@@ -506,20 +506,30 @@ fn process_ipc_request(payload: &str, runtime: &AppState) -> IpcResponse {
 
 async fn wake_monitor(runtime: Arc<AppState>) {
     let mut previous = Instant::now();
+    let mut previous_wall_clock = SystemTime::now();
     let mut interval = tokio::time::interval(Duration::from_secs(30));
     interval.set_missed_tick_behavior(tokio::time::MissedTickBehavior::Skip);
     loop {
         interval.tick().await;
         let now = Instant::now();
-        if wake_requires_catch_up(now.duration_since(previous)) {
+        let wall_clock = SystemTime::now();
+        if wake_requires_catch_up(
+            now.duration_since(previous),
+            wall_clock.duration_since(previous_wall_clock).ok(),
+        ) {
             runtime.trigger.notify_one();
         }
         previous = now;
+        previous_wall_clock = wall_clock;
     }
 }
 
-fn wake_requires_catch_up(elapsed: Duration) -> bool {
-    elapsed > WAKE_CATCH_UP_THRESHOLD
+fn wake_requires_catch_up(
+    monotonic_elapsed: Duration,
+    wall_clock_elapsed: Option<Duration>,
+) -> bool {
+    monotonic_elapsed > WAKE_CATCH_UP_THRESHOLD
+        || wall_clock_elapsed.is_some_and(|elapsed| elapsed > WAKE_CATCH_UP_THRESHOLD)
 }
 
 fn bootstrap_bundled_lastfm_application(
@@ -738,13 +748,39 @@ mod tests {
 
     #[test]
     fn normal_scheduler_delays_do_not_trigger_sleep_recovery() {
-        assert!(!wake_requires_catch_up(Duration::from_secs(30)));
-        assert!(!wake_requires_catch_up(Duration::from_secs(90)));
+        assert!(!wake_requires_catch_up(
+            Duration::from_secs(30),
+            Some(Duration::from_secs(30))
+        ));
+        assert!(!wake_requires_catch_up(
+            Duration::from_secs(90),
+            Some(Duration::from_secs(90))
+        ));
     }
 
     #[test]
     fn system_sleep_or_long_suspension_triggers_one_catch_up() {
-        assert!(wake_requires_catch_up(Duration::from_secs(91)));
-        assert!(wake_requires_catch_up(Duration::from_secs(8 * 60 * 60)));
+        assert!(wake_requires_catch_up(
+            Duration::from_secs(91),
+            Some(Duration::from_secs(91))
+        ));
+        assert!(wake_requires_catch_up(
+            Duration::from_secs(8 * 60 * 60),
+            Some(Duration::from_secs(8 * 60 * 60))
+        ));
+    }
+
+    #[test]
+    fn macos_sleep_is_detected_when_its_monotonic_clock_stops() {
+        assert!(wake_requires_catch_up(
+            Duration::from_secs(30),
+            Some(Duration::from_secs(8 * 60 * 60))
+        ));
+    }
+
+    #[test]
+    fn backward_wall_clock_adjustments_do_not_trigger_sleep_recovery() {
+        assert!(!wake_requires_catch_up(Duration::from_secs(30), None));
+        assert!(wake_requires_catch_up(Duration::from_secs(91), None));
     }
 }

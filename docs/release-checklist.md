@@ -52,7 +52,7 @@ The current delivery is an open-source MVP. Native Windows QA, target NAS hardwa
 - [x] Last.fm reauthorization immediately retries auth-blocked outbox entries without disturbing unrelated retry backoff
 - [x] A history gap or single rejected song cannot permanently stop later background synchronization
 - [x] Incomplete setup and invalid account context cannot leave the UI stuck in a syncing state
-- [x] Long wake/suspend intervals and normal timer delays have deterministic catch-up coverage
+- [x] Long wake/suspend intervals, stopped macOS monotonic clocks and normal timer delays have deterministic catch-up coverage
 - [x] Real YouTube Music baseline followed by a real Last.fm scrobble — 14-item baseline, then one new play accepted exactly once and confirmed on Last.fm
 - [ ] Real consecutive repeat-play scrobble verification
 - [ ] Real Mac sleep/wake catch-up without overlap duplication
