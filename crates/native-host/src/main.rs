@@ -109,13 +109,20 @@ fn write_chrome_message(writer: &mut impl Write, response: &IpcResponse) -> Resu
 fn launch_desktop() {
     if let Ok(executable) = std::env::var("SCROBBLE_BRIDGE_APP") {
         let _ = Command::new(executable).spawn();
-        return;
+    } else {
+        launch_platform_desktop();
     }
-    #[cfg(target_os = "macos")]
+}
+
+#[cfg(target_os = "macos")]
+fn launch_platform_desktop() {
     let _ = Command::new("open")
         .args(["-g", "-j", "-a", "Scrobble Bridge"])
         .spawn();
-    #[cfg(windows)]
+}
+
+#[cfg(windows)]
+fn launch_platform_desktop() {
     if let Ok(path) = std::env::current_exe().and_then(|path| {
         path.parent()
             .map(|parent| parent.join("scrobble-bridge-desktop.exe"))
@@ -124,6 +131,9 @@ fn launch_desktop() {
         let _ = Command::new(path).spawn();
     }
 }
+
+#[cfg(not(any(target_os = "macos", windows)))]
+fn launch_platform_desktop() {}
 
 #[cfg(test)]
 mod tests {
