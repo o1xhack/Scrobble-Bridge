@@ -48,8 +48,8 @@ importers:
         specifier: ^3.6.2
         version: 3.9.6
       prettier-plugin-svelte:
-        specifier: ^3.4.0
-        version: 3.5.2(prettier@3.9.6)(svelte@5.56.9)
+        specifier: ^4.1.1
+        version: 4.1.1(prettier@3.9.6)(svelte@5.56.9)
       svelte-check:
         specifier: ^4.7.6
         version: 4.7.6(picomatch@4.0.5)(svelte@5.56.9)(typescript@6.0.3)
@@ -103,8 +103,8 @@ importers:
         specifier: ^3.6.2
         version: 3.9.6
       prettier-plugin-svelte:
-        specifier: ^3.4.0
-        version: 3.5.2(prettier@3.9.6)(svelte@5.56.9)
+        specifier: ^4.1.1
+        version: 4.1.1(prettier@3.9.6)(svelte@5.56.9)
       svelte-check:
         specifier: ^4.3.2
         version: 4.7.6(picomatch@4.0.5)(svelte@5.56.9)(typescript@6.0.3)
@@ -127,8 +127,8 @@ importers:
         specifier: ^3.6.2
         version: 3.9.6
       prettier-plugin-svelte:
-        specifier: ^3.4.0
-        version: 3.5.2(prettier@3.9.6)(svelte@5.56.9)
+        specifier: ^4.1.1
+        version: 4.1.1(prettier@3.9.6)(svelte@5.56.9)
       svelte:
         specifier: ^5.56.9
         version: 5.56.9
@@ -495,6 +495,9 @@ packages:
   devalue@5.9.0:
     resolution: {integrity: sha512-RWrqdArjvPbsATEhOPUo6Wndc/iWnkWKlhIrdlF3zMMYo/c3CVtoaVAyLtWxz5h8nSlkHzxnzV2uLydPXmtF+A==}
 
+  devalue@5.9.1:
+    resolution: {integrity: sha512-+17vil3EVQRzvtDJSFuTWEb8XJRvXqAiV3qZyQWD398QeXUa6CxsUyMdD1fxzEhUrd4FojitFz7lhIHBTlV4fw==}
+
   es-module-lexer@2.3.1:
     resolution: {integrity: sha512-shc1dbU90Yl/xq1QrC7QRtfcwURZuVRfPhZbDoldJ1cn1gzDvBaBWlv0eFolj5+0znnPJz5TXLxsN77X/12KTA==}
 
@@ -660,11 +663,12 @@ packages:
     resolution: {integrity: sha512-u82N74LFzG8ca+dD8puPnplTXoGH4fTPpVGuIbt36G3qvNlkvfD0lEAZSxaly3KX8TS/L1A1gsCEmvKmBcVbkQ==}
     engines: {node: ^10 || ^12 || >=14}
 
-  prettier-plugin-svelte@3.5.2:
-    resolution: {integrity: sha512-ItFouLvzSFE3ulNl4DKoWM3BGcbDCNVpIyy/Y3F2gC3aNiGLxtFUdffVqO5Z5hhYG+DFT5KULWaxmeFFpdbvaQ==}
+  prettier-plugin-svelte@4.1.1:
+    resolution: {integrity: sha512-wXvbXMjSvb4C9ENWTHXyd+ihakKCsJ6rJhLP6/8HFNj4GkZr48jqL9PoKsl2sk7SyCZRTnJ7O2TTowUpOxP/KA==}
+    engines: {node: '>=20'}
     peerDependencies:
       prettier: ^3.0.0
-      svelte: ^3.2.0 || ^4.0.0-next.0 || ^5.0.0-next.0
+      svelte: ^5.0.0
 
   prettier@3.9.6:
     resolution: {integrity: sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==}
@@ -931,7 +935,7 @@ snapshots:
       '@types/cookie': 0.6.0
       acorn: 8.18.0
       cookie: 0.7.2
-      devalue: 5.9.0
+      devalue: 5.9.1
       esm-env: 1.2.2
       kleur: 4.1.5
       magic-string: 0.30.21
@@ -1110,6 +1114,8 @@ snapshots:
 
   devalue@5.9.0: {}
 
+  devalue@5.9.1: {}
+
   es-module-lexer@2.3.1: {}
 
   esm-env@1.2.2: {}
@@ -1224,7 +1230,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  prettier-plugin-svelte@3.5.2(prettier@3.9.6)(svelte@5.56.9):
+  prettier-plugin-svelte@4.1.1(prettier@3.9.6)(svelte@5.56.9):
     dependencies:
       prettier: 3.9.6
       svelte: 5.56.9
