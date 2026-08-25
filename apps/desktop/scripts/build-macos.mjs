@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { cpSync, mkdirSync, rmSync, symlinkSync } from "node:fs";
 import { resolve } from "node:path";
+import { createSigningEnvironment } from "./signing-environment.mjs";
 
 if (process.platform !== "darwin")
   throw new Error("The macOS bundle script must run on macOS");
@@ -35,9 +36,7 @@ const tauriArguments = [
 if (requestedTarget) tauriArguments.push("--target", requestedTarget);
 execFileSync("pnpm", tauriArguments, {
   cwd: appRoot,
-  env: signingIdentity
-    ? { ...process.env, APPLE_SIGNING_IDENTITY: signingIdentity }
-    : process.env,
+  env: createSigningEnvironment(process.env, signingIdentity),
   stdio: "inherit",
 });
 const bundleRoot = resolve(
