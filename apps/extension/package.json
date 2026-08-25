@@ -10,7 +10,7 @@
     "format": "prettier --check --ignore-path ../../.prettierignore ."
   },
   "devDependencies": {
-    "@types/node": "^24.10.1",
+    "@types/node": "^26.2.0",
     "@types/chrome": "^0.1.36",
     "prettier": "^3.6.2",
     "typescript": "^6.0.3",
