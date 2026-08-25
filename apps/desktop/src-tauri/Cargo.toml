@@ -35,7 +35,7 @@ tracing.workspace = true
 ytmusic-client = { version = "1.0.0", path = "../../../crates/ytmusic-client" }
 
 [target.'cfg(windows)'.dependencies]
-winreg = "0.55.0"
+winreg = "0.56.0"
 
 [dev-dependencies]
 tempfile.workspace = true
