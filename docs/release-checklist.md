@@ -14,6 +14,7 @@ The current delivery is an open-source MVP. Native Windows QA, target NAS hardwa
 - [x] Dependency/security review with `cargo-deny`, `cargo-audit` and `pnpm audit`
 - [x] Source/artifact secret-pattern review; diagnostics contain no credential values
 - [x] Public documentation, demo fixtures and screenshots exclude real connected-account identifiers
+- [x] English source-of-truth README and Simplified Chinese download/install guide; `docs:check` validates both entrypoints and their local links
 
 ## Last.fm application and onboarding
 

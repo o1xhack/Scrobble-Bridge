@@ -13,7 +13,8 @@
   },
   "scripts": {
     "build": "pnpm -r build",
-    "check": "pnpm -r check",
+    "check": "pnpm docs:check && pnpm -r check",
+    "docs:check": "node scripts/check-docs.mjs",
     "test": "pnpm -r test",
     "format": "pnpm -r format"
   }

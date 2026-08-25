@@ -1,121 +1,193 @@
-# Scrobble Bridge
+<p align="center">
+  <img src="apps/desktop/src-tauri/icons/icon.png" alt="Scrobble Bridge icon" width="112">
+</p>
 
-**YouTube Music → Last.fm · 本地优先的跨设备收听同步**
+<h1 align="center">Scrobble Bridge</h1>
 
-Scrobble Bridge 是一个本地优先、MIT 开源的 YouTube Music → Last.fm scrobbler。它可以作为 macOS / Windows 桌面 App 常驻后台，也可以在 24 小时在线的 NAS 上以 Docker 容器运行。只要歌曲进入同一个 YouTube Music 账号的云端历史，手机、平板和其他电脑上的播放也可以被后台运行的 Scrobble Bridge 发现并同步。
+<p align="center"><strong>YouTube Music → Last.fm · private, local-first scrobbling across your devices</strong></p>
 
-> 这是非官方独立项目，与 Google、YouTube 或 Last.fm 没有隶属或合作关系。YouTube Music 没有提供本项目所需的公开历史 API；当前实现使用浏览器登录凭据访问内部 Web endpoint，因此可能随上游改版失效。播放时间是根据历史窗口估算，不应当视为精确收听日志。
+<p align="center">
+  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases"><img src="https://img.shields.io/github/v/release/o1xhack/Scrobble-Bridge?label=release&color=7c3aed" alt="Latest release"></a>
+  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases"><img src="https://img.shields.io/github/downloads/o1xhack/Scrobble-Bridge/total?label=downloads&color=7c3aed" alt="Total downloads"></a>
+  <a href="https://github.com/o1xhack/Scrobble-Bridge/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/o1xhack/Scrobble-Bridge/ci.yml?branch=main&label=CI" alt="CI status"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/o1xhack/Scrobble-Bridge?color=7c3aed" alt="MIT license"></a>
+</p>
 
-## 1.0 包含什么
+<p align="center">
+  <img src="https://img.shields.io/badge/macOS-12%2B-111111?logo=apple" alt="macOS 12 or later">
+  <img src="https://img.shields.io/badge/Windows-10%2F11-0078D4?logo=windows11&logoColor=white" alt="Windows 10 or 11">
+  <img src="https://img.shields.io/badge/Docker-amd64%20%7C%20arm64-2496ED?logo=docker&logoColor=white" alt="Docker amd64 and arm64">
+  <img src="https://img.shields.io/badge/Chrome-Manifest%20V3-4285F4?logo=googlechrome&logoColor=white" alt="Chrome Manifest V3">
+</p>
 
-- Rust 同步核心：有序历史窗口、baseline、间隙保护、重复播放、确定性 fingerprint；
-- SQLite outbox：提交状态、崩溃恢复、Last.fm recent tracks 对照、退避重试、每日备份；
-- Tauri 2 + Svelte 桌面 App：macOS 12+、Windows 10/11 x64、简体中文/英文、Menu Bar / System Tray、登录启动、关闭窗口后常驻、Dock 重新打开、睡眠唤醒补跑；
-- Chrome Manifest V3 扩展：简体中文/英文；自动识别当前 YouTube Music 账号及多账号上下文；安装时不索取 YouTube 站点访问，用户启用自动刷新时才按需申请 `cookies`、`music.youtube.com` 和认证 Cookie 所属的父域 `youtube.com`，且不把 Cookie 写入扩展存储；
-- Native Messaging：扩展把短期凭据快照交给同机桌面 App，App 存入 macOS Keychain / Windows Credential Manager；
-- Last.fm 授权：官方配置的桌面安装包预置项目级 API application；普通用户只需打开 Last.fm 登录授权，不需要自己填写 API Key 或 Shared Secret；
-- Docker / NAS：`linux/amd64`、`linux/arm64`、非 root、只读根文件系统、健康检查、持久化卷、Web 管理和 HTTPS 设备配对；
-- CI：Rust/TypeScript 测试、macOS/Windows 原生编译、双架构容器、DMG/NSIS/扩展发布产物。
+<p align="center">🌐 <strong>English</strong> · <a href="docs/zh-CN/README.md">简体中文</a></p>
 
-实现详情见 [1.0 实施状态](docs/1.0-implementation-status.md)，测试边界见 [1.0 QA 报告](docs/1.0-qa-report.md)，设计依据见 [产品与技术架构](docs/1.0-product-architecture-plan.md)。
+<p align="center">
+  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases"><strong>Download for macOS or Windows →</strong></a>
+  &nbsp;·&nbsp;
+  <a href="#docker--nas">Run on a NAS</a>
+</p>
 
-## 选择运行方式
+Scrobble Bridge keeps your YouTube Music listening history in sync with Last.fm. It can stay in the background on a Mac or Windows PC, or run continuously as a Docker service on a NAS. Once a play reaches the cloud history of the same YouTube Music account, Scrobble Bridge can discover it even if the music was played on a phone, tablet, TV, or another computer.
 
-| 方式         | 适合场景                            | Chrome 关闭后                                         | 凭据保存位置                                    |
-| ------------ | ----------------------------------- | ----------------------------------------------------- | ----------------------------------------------- |
-| 桌面 App     | Mac mini、日常 Mac/Windows PC       | App 继续按已有快照同步；Chrome 下次启动时扩展刷新快照 | Keychain / Credential Manager                   |
-| Docker / NAS | Synology、QNAP、TrueNAS、常开服务器 | 容器继续按已有快照同步；扩展下次启动后通过 HTTPS 更新 | `/data/credentials.enc`，ChaCha20-Poly1305 加密 |
+> **Release status:** the open-source MVP 1.0 code and reproducible build artifacts are complete, but the first public binary GitHub Release has not been published yet. The permanent download link above will serve the notarized/signed v1.0.0 installers after the remaining public-release gates are approved. GitHub Actions artifacts are test artifacts, not a public release.
 
-Chrome 不需要一直开。没有浏览器时，Scrobble Bridge 仍可使用最后一个有效快照；Cookie 真正失效后会进入 `needs_attention`，必须重新打开并登录 YouTube Music，扩展才可刷新，项目不会声称“永久 Cookie”。
+> Scrobble Bridge is an independent project and is not affiliated with Google, YouTube, or Last.fm. YouTube Music does not provide the public history API this project needs. The current integration uses browser credentials with an internal web endpoint and may require maintenance when upstream behavior changes. Play times are inferred from history windows and should not be treated as an exact listening log.
 
-## 桌面 App
+## Download
 
-发布产物由 `.github/workflows/artifacts.yml` 生成：
+Scrobble Bridge is distributed directly through [GitHub Releases](https://github.com/o1xhack/Scrobble-Bridge/releases). The macOS app does **not** require the Mac App Store, an App Store account, or an App Store purchase.
 
-- macOS Apple Silicon / Intel：DMG；
-- Windows x64：当前用户 NSIS installer；
-- Chrome Extension：可审阅 ZIP。
+| Platform               | Download from the latest release      | Public distribution gate                                    |
+| ---------------------- | ------------------------------------- | ----------------------------------------------------------- |
+| Mac with Apple silicon | `Scrobble Bridge_1.0.0_aarch64.dmg`   | Developer ID signed, Apple notarized, ticket stapled        |
+| Intel Mac              | `Scrobble Bridge_1.0.0_x86_64.dmg`    | Developer ID signed, Apple notarized, ticket stapled        |
+| Windows 10/11 x64      | `Scrobble Bridge_1.0.0_x64-setup.exe` | Valid Authenticode signature                                |
+| Chrome extension       | Chrome Web Store listing              | Production extension ID connected to the desktop installers |
 
-开发构建：
+Checksums are published next to the installers. Do not download Scrobble Bridge from third-party mirrors.
+
+### Install on macOS
+
+1. Open the [Releases page](https://github.com/o1xhack/Scrobble-Bridge/releases) and download the DMG for your Mac.
+2. Open the DMG and drag **Scrobble Bridge** to **Applications**.
+3. Open Scrobble Bridge from Applications. The public build will be signed with Developer ID and notarized by Apple for direct distribution.
+4. Install the Scrobble Bridge Chrome extension from its official Chrome Web Store listing when that listing is live.
+5. Open YouTube Music in Chrome, then enable automatic credential refresh in the extension.
+6. In the desktop app, choose **Authorize with Last.fm** and approve Scrobble Bridge in the browser. You do not need to enter an API key or shared secret.
+
+Closing the main window leaves the background service running. Reopen it from the Dock/menu bar, or choose **Quit** to stop it completely.
+
+### Install on Windows
+
+1. Download the x64 setup executable from the [Releases page](https://github.com/o1xhack/Scrobble-Bridge/releases).
+2. Run the per-user installer and launch Scrobble Bridge from the Start menu.
+3. Install the official Chrome extension, connect YouTube Music, and authorize Last.fm in the desktop app.
+4. Closing the window leaves Scrobble Bridge in the system tray; choose **Quit** from the tray menu to stop it.
+
+### Chrome extension before the store listing
+
+The public Chrome Web Store listing is the recommended installation path. Until its production ID is assigned and included in the desktop installers, the extension is available only for source/developer testing. Do not treat the store-upload ZIP as a general sideload package: Chrome assigns a different identity outside the store unless the development manifest is used.
+
+For development, build the extension and load `apps/extension/dist` from `chrome://extensions`:
 
 ```bash
 corepack enable
 pnpm install --frozen-lockfile
-pnpm --filter @scrobble-bridge/desktop bundle:mac   # macOS
-pnpm --filter @scrobble-bridge/desktop tauri build --bundles nsis --config src-tauri/tauri.release.conf.json  # Windows
+pnpm --filter @scrobble-bridge/extension build
 ```
 
-第一次打开 App 会注册随包提供的 Chrome Native Messaging host。关闭主窗口只会隐藏窗口；重新点击 macOS Dock 图标或托盘中的 **打开 / Open** 会恢复主窗口，从托盘选择 **退出 / Quit** 才会停止后台运行。
+## Why Scrobble Bridge?
 
-### Last.fm 登录方式
+- **One setup for every playback device.** A background instance watches the cloud history of one YouTube Music account, so phone, tablet, TV, and browser plays can reach Last.fm without installing a scrobbler on each device.
+- **No API keys for ordinary users.** Official desktop installers include the project-level Last.fm application. Each user authorizes only their own Last.fm session.
+- **Local-first credentials.** macOS uses Keychain, Windows uses Credential Manager, and NAS credentials are encrypted at rest. Scrobble Bridge has no hosted account service or credential relay.
+- **Crash-safe and duplicate-aware.** A durable SQLite outbox, retry policy, recent-track reconciliation, and deterministic fingerprints protect pending plays through restarts and transient failures.
+- **Designed for long-running use.** Pause state survives restarts, sleep/wake triggers catch-up, expired authorization requires explicit recovery, and history gaps cannot permanently stop later synchronization.
+- **Desktop or self-hosted.** Use a native app for the easiest setup or Docker on an always-on NAS.
 
-官方安装包由维护者在构建时注入项目的 Last.fm API application。首次使用时：
+## How it works
 
-1. 安装并启用 Chrome 扩展，让它连接当前 YouTube Music 账号。
-2. 在桌面 App 中点击 **前往 Last.fm 授权**。
-3. 在 Last.fm 完成登录并允许 Scrobble Bridge 访问。
-4. 切回桌面 App 后会自动完成连接；必要时也可以点击备用的 **我已批准访问，完成连接**。
+```mermaid
+flowchart LR
+    A[YouTube Music account history] --> B[Scrobble Bridge]
+    C[Chrome extension] -->|refreshes local credentials| B
+    B --> D[Local encrypted credential store]
+    B --> E[SQLite outbox]
+    E --> F[Your Last.fm account]
+```
 
-源码仓库不包含实际 API Key、Shared Secret、Cookie 或用户 session。开源自行构建时如果没有设置项目级构建凭据，App 会提供高级表单，让维护者或使用者连接自己创建的 Last.fm API application。自己的账号 session 仍只保存在本机系统凭据库中，不会被上传给项目维护者。
+The Chrome extension requests YouTube access only after you explicitly enable automatic refresh. It sends a short-lived credential snapshot to the desktop app through Chrome Native Messaging, or to a paired NAS over a user-approved HTTPS origin. Cookies are never stored in the extension.
 
-## Chrome Extension
+## Choose where to run it
 
-1. 构建：`pnpm --filter @scrobble-bridge/extension build`；
-2. 在 `chrome://extensions` 打开 Developer mode；
-3. 选择 **Load unpacked**，加载 `apps/extension/dist`；
-4. 选择 Desktop 或 NAS，点击 **启用自动刷新**；扩展会自动识别当前 YouTube Music 账号，不需要填写账号标签或 Google account index；
-5. Chrome 此时才会请求读取 `music.youtube.com` 及认证 Cookie 所属父域 `youtube.com` 的最小权限。授权后可随时在扩展中点击 **移除 YouTube Music 访问权限**。
+| Mode         | Best for                             | When Chrome is closed                                                            | Credential storage                                   |
+| ------------ | ------------------------------------ | -------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Desktop app  | A daily Mac or Windows PC            | Continues with the last valid snapshot; refreshes the next time Chrome opens     | Keychain / Credential Manager                        |
+| Docker / NAS | Synology, QNAP, TrueNAS, home server | Continues with the last valid snapshot; refreshes after the extension reconnects | `/data/credentials.enc`, ChaCha20-Poly1305 encrypted |
 
-NAS 模式必须从 Web 管理页生成十分钟有效的一次性配对码，并使用 Chrome 已信任证书的 HTTPS 地址。扩展仅在用户点击配对时请求该精确 origin 的访问权限。详见 [扩展与凭据连接](docs/extension.md) 与 [Chrome Web Store 上架准备](docs/chrome-web-store.md)。Chrome Web Store 提交本身不属于当前仓库公开动作。
+Chrome does not need to remain open. When the saved YouTube credential truly expires, Scrobble Bridge enters `needs_attention`; open Chrome, sign in to YouTube Music again, and let the extension refresh it. The project does not claim to provide a permanent Cookie.
+
+## Included in 1.0
+
+- Rust synchronization core with ordered history windows, baseline protection, gap handling, repeated-play support, and deterministic fingerprints.
+- SQLite outbox with crash recovery, Last.fm recent-track checks, exponential backoff, and daily backup.
+- Tauri 2 + Svelte desktop app for macOS 12+ and Windows 10/11 x64, with English and Simplified Chinese UI, menu bar/system tray operation, launch at login, and sleep/wake recovery.
+- Chrome Manifest V3 extension with opt-in minimal permissions, automatic YouTube Music account detection, multi-account safeguards, and English/Simplified Chinese UI.
+- Native Messaging bridge with an exact extension-origin allowlist and operating-system credential storage.
+- Last.fm browser authorization using the bundled application identity; source builds retain an advanced bring-your-own-application fallback.
+- Docker/NAS runtime for `linux/amd64` and `linux/arm64`, with a non-root user, read-only root filesystem, health endpoints, persistent storage, and HTTPS device pairing.
+
+See the [1.0 implementation status](docs/1.0-implementation-status.md), [1.0 QA report](docs/1.0-qa-report.md), and [product and technical architecture](docs/1.0-product-architecture-plan.md).
 
 ## Docker / NAS
 
 ```bash
+git clone https://github.com/o1xhack/Scrobble-Bridge.git
+cd Scrobble-Bridge
 docker compose -f deploy/docker/compose.yaml up -d --build
 docker compose -f deploy/docker/compose.yaml exec scrobble-bridge \
   sh -c 'cat /data/secrets/admin.token'
 ```
 
-打开 `http://NAS_ADDRESS:8787` 完成管理设置。不要把这个 HTTP 端口直接暴露到公网；Chrome 配对必须走可信 HTTPS reverse proxy 或 Tailscale Serve。完整说明见 [Docker / NAS 部署](docs/docker-nas.md)。
+Open `http://NAS_ADDRESS:8787` to finish setup. Do not expose this HTTP port directly to the public internet. Chrome pairing requires a trusted HTTPS reverse proxy or Tailscale Serve. See [Docker / NAS deployment](docs/docker-nas.md).
 
-## 本地开发与验证
+## Build from source
 
-需要 Rust 1.94.1、Node.js 24、pnpm 10.34.5，以及对应平台的 Tauri 系统依赖。
+Requirements: Rust 1.94.1, Node.js 24, pnpm 10.34.5, and the Tauri system dependencies for your platform.
 
 ```bash
-cargo fmt --all -- --check
+corepack enable
+pnpm install --frozen-lockfile
 cargo test --workspace
-cargo clippy --workspace --all-targets -- -D warnings
 pnpm check
 pnpm test
 pnpm build
 ```
 
-仓库结构：
+Desktop bundles:
 
-- `crates/scrobble-core`：纯同步算法；
-- `crates/scrobble-storage`：SQLite 和加密 vault；
-- `crates/ytmusic-client`、`crates/lastfm-client`：上游适配器；
-- `crates/scrobble-engine`：outbox 执行器；
-- `apps/desktop`：Tauri App；
-- `apps/extension`：Chrome Extension；
-- `crates/scrobble-daemon`、`apps/web`：Docker runtime 和管理 UI。
+```bash
+pnpm --filter @scrobble-bridge/desktop bundle:mac
+# On Windows:
+pnpm --filter @scrobble-bridge/desktop tauri build --bundles nsis \
+  --config src-tauri/tauri.release.conf.json
+```
 
-### 维护者构建配置
+Source builds do not contain the official Last.fm API key or shared secret. Without project-level build credentials, the app exposes an advanced form for connecting a Last.fm API application you control. Never commit API credentials, YouTube Cookies, or Last.fm sessions.
 
-官方桌面构建需要在 GitHub 仓库配置两个 Actions secrets：
+## Documentation
 
-- `SCROBBLE_LASTFM_API_KEY`
-- `SCROBBLE_LASTFM_SHARED_SECRET`
+| Document                                                 | Purpose                                                     |
+| -------------------------------------------------------- | ----------------------------------------------------------- |
+| [Simplified Chinese README](docs/zh-CN/README.md)        | Chinese product overview, download, installation, and setup |
+| [Extension and credential connection](docs/extension.md) | Desktop/NAS extension flow and permission boundaries        |
+| [Docker / NAS deployment](docs/docker-nas.md)            | Self-hosted deployment and HTTPS pairing                    |
+| [Privacy](PRIVACY.md)                                    | Data handling and network destinations                      |
+| [Security policy](SECURITY.md)                           | Vulnerability reporting and supported versions              |
+| [Chrome Web Store preparation](docs/chrome-web-store.md) | Permissions, listing copy, and production-ID handoff        |
+| [1.0 QA report](docs/1.0-qa-report.md)                   | Verified scenarios and remaining real-device tests          |
+| [Release checklist](docs/release-checklist.md)           | Signing, notarization, hardware QA, and publication gates   |
 
-两个值必须同时存在，不能写入 Git 仓库或 Actions 日志。默认 artifact workflow 会拒绝生成缺少项目级 Last.fm application 的官方安装包；需要明确构建自行配置版本时，可以选择 `self-provided` 模式。Chrome Web Store 分配正式扩展 ID 后，再把它设置为仓库变量 `SCROBBLE_PRODUCTION_EXTENSION_ID`，桌面安装包会同时允许经校验的正式扩展和固定的开发扩展。
+## Privacy, limitations, and API terms
 
-## 安全、隐私与发布状态
+Scrobble Bridge does not provide hosted accounts, cloud credential storage, analytics, or a subscription service. Diagnostic exports contain operational state rather than credential values.
 
-请先阅读 [隐私说明](PRIVACY.md) 与 [安全策略](SECURITY.md)。公开分发前仍必须由发布者提供 Apple Developer ID / notarization 凭据和 Windows code-signing certificate，并在真实 Intel Mac、Windows x64 与 amd64/arm64 NAS 上完成验收。源码、自动化和未签名本地产物不等于已经公开发布；详细门禁见 [1.0 发布清单](docs/release-checklist.md)。
+The Last.fm shared secret embedded in a native installer can be extracted by a determined party and must not be treated as a server-side secret. The project monitors application-level failures and supports credential rotation. Last.fm's default API license is non-commercial; paid distribution, subscriptions, commercial services, or research use require separate permission from Last.fm.
 
-本项目不提供托管账户、云端凭据中转或订阅服务。官方桌面安装包可以包含项目级 Last.fm API application，以便用户直接授权自己的 Last.fm 账号；源码构建和 NAS 自托管仍支持用户自备 API application。原生客户端里打包的 shared secret 可以被有能力的人从安装包提取，因此不能把它视为服务器端机密，需要监控、轮换并遵守 Last.fm 服务条款。Last.fm API 默认仅许可非商业用途；如需收费分发、订阅、商业服务或研究用途，必须先向 Last.fm 获得相应许可。
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Before opening a pull request, run:
+
+```bash
+pnpm check
+pnpm test
+pnpm build
+cargo fmt --all --check
+cargo test --workspace
+cargo clippy --workspace --all-targets -- -D warnings
+```
 
 ## License
 
-[MIT](LICENSE)。贡献方式见 [CONTRIBUTING.md](CONTRIBUTING.md)，第三方依赖说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+[MIT](LICENSE). See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for third-party software notices.
