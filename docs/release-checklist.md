@@ -13,6 +13,7 @@ The current delivery is an open-source MVP. Native Windows QA, target NAS hardwa
 - [x] Windows x64 `cargo xwin check` and strict workspace Clippy for all targets
 - [x] Dependency/security review with `cargo-deny`, `cargo-audit` and `pnpm audit`
 - [x] Release-candidate dependency review completed across Cargo, pnpm, Docker and GitHub Actions; accepted only current-Rust-compatible patch/minor updates and regenerated locks. Deferred to a later train: Node 25, Rust 1.97, TypeScript 7, `@types/node` 26, `@types/chrome` 0.2, `prettier-plugin-svelte` 4, `winreg` 0.56 and pnpm 11
+- [x] GitHub alert `GHSA-wrw7-89jp-8q8g` is tracked openly: vulnerable `glib 0.18.5` is a Tauri Linux GTK transitive dependency, is absent from the shipped macOS/Windows target graphs, and cannot be independently upgraded to the patched `glib 0.20` generation until the upstream Linux stack moves
 - [x] GitHub vulnerability alerts enabled; recurring Dependabot version-update PRs disabled so routine upgrades are handled in the release train
 - [x] Source/artifact secret-pattern review; diagnostics contain no credential values
 - [x] Public documentation, demo fixtures and screenshots exclude real connected-account identifiers
