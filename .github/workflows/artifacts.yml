@@ -81,14 +81,17 @@ jobs:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-      - run: shasum -a 256 target/release/bundle/dmg/*.dmg target/release/bundle/updater/* > checksums-${{ matrix.architecture }}.txt
+      - name: Stage macOS release assets
+        shell: bash
+        run: |
+          mkdir -p release-assets
+          cp target/release/bundle/dmg/*.dmg release-assets/
+          cp target/release/bundle/updater/* release-assets/
+          (cd release-assets && shasum -a 256 ./*.dmg ./*.app.tar.gz ./*.sig > checksums-${{ matrix.architecture }}.txt)
       - uses: actions/upload-artifact@v7
         with:
           name: scrobble-bridge-macos-${{ matrix.architecture }}
-          path: |
-            target/release/bundle/dmg/*.dmg
-            target/release/bundle/updater/*
-            checksums-${{ matrix.architecture }}.txt
+          path: release-assets/*
           if-no-files-found: error
 
   windows:
