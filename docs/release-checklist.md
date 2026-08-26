@@ -12,6 +12,8 @@ The current delivery is an open-source MVP. Native Windows QA, target NAS hardwa
 - [x] `pnpm install --frozen-lockfile && pnpm check && pnpm test && pnpm build` — zero type errors
 - [x] Windows x64 `cargo xwin check` and strict workspace Clippy for all targets
 - [x] Dependency/security review with `cargo-deny`, `cargo-audit` and `pnpm audit`
+- [x] Release-candidate dependency review completed across Cargo, pnpm, Docker and GitHub Actions; accepted only current-Rust-compatible patch/minor updates and regenerated locks. Deferred to a later train: Node 25, Rust 1.97, TypeScript 7, `@types/node` 26, `@types/chrome` 0.2, `prettier-plugin-svelte` 4, `winreg` 0.56 and pnpm 11
+- [x] GitHub vulnerability alerts enabled; recurring Dependabot version-update PRs disabled so routine upgrades are handled in the release train
 - [x] Source/artifact secret-pattern review; diagnostics contain no credential values
 - [x] Public documentation, demo fixtures and screenshots exclude real connected-account identifiers
 - [x] English source-of-truth README and Simplified Chinese download/install guide; `docs:check` validates both entrypoints and their local links
@@ -41,6 +43,18 @@ The current delivery is an open-source MVP. Native Windows QA, target NAS hardwa
 - [ ] Windows 10/11 x64 NSIS installs per-user, launches, registers Chrome host and removes its registration on uninstall
 - [ ] Installer and contained executables report a valid Authenticode signature
 - [x] Checksums match the current local artifacts
+
+## Software updates
+
+- [x] Tauri updater uses the permanent GitHub Releases `latest.json` endpoint and an embedded public verification key; the private key is absent from the repository
+- [x] App startup, foreground return and sleep/wake recovery trigger a check only when the persisted 24-hour interval is due; Settings also provides an explicit manual check
+- [x] A new version appears in a prominent home-screen banner with bilingual controls and release notes
+- [x] Download, signature verification, and **Update now and restart** are separate user-controlled steps; there is no silent download or install
+- [x] Release builds require signed updater artifacts, normalize both Mac architecture filenames, and generate a static two-architecture manifest as an internal GitHub Actions artifact
+- [x] The current Apple Silicon and Intel updater archives were built from Developer ID-signed Apps and independently verified against the embedded Tauri public key
+- [x] `pnpm version:set <semver>` updates the workspace, desktop, extension, Tauri and public download versions and creates a bilingual release-note stub without committing, tagging or publishing
+- [x] Both current Mac updater archives and `.sig` files are generated from the final Developer ID-signed candidate and the generated `latest.json` points to their exact future Release asset names
+- [ ] End-to-end update from an installed older signed build downloads, verifies, replaces the App and relaunches while preserving Keychain and SQLite state
 
 ## Runtime scenarios
 
@@ -96,3 +110,9 @@ The current delivery is an open-source MVP. Native Windows QA, target NAS hardwa
 - [x] Current Chrome distribution is explicitly documented as developer-mode sideloading
 - [ ] Chrome Web Store listing reviewed and submission separately authorized
 - [ ] Git tag, GitHub Release, GHCR push and store submission each receive separate authorization
+
+## Test policy
+
+- Pull requests run the existing checks relevant to their changed surfaces.
+- Add focused tests only for changed behavior, regressions, parser contracts or uncovered release risk; do not add tests mechanically per PR.
+- The release candidate runs and records the complete source, desktop, extension, NAS, signing and real-device gates once before publication.

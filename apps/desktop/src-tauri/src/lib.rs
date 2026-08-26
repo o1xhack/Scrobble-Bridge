@@ -26,6 +26,8 @@ use tauri::{
 use tauri_plugin_autostart::MacosLauncher;
 use ytmusic_client::BrowserCredentials;
 
+mod updates;
+
 const DEFAULT_SYNC_INTERVAL: Duration = Duration::from_secs(600);
 const KEYRING_SERVICE: &str = "com.scrobblebridge.desktop";
 const NATIVE_HOST_NAME: &str = "com.scrobblebridge.host";
@@ -241,10 +243,12 @@ pub fn run() {
     let app = tauri::Builder::default()
         .plugin(autostart.build())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(|app| {
             let data_dir = app.path().app_data_dir()?;
             let diagnostics_dir = app.path().app_log_dir()?;
             fs::create_dir_all(&data_dir)?;
+            app.manage(updates::UpdateContext::new(&data_dir));
             let vault = Arc::new(OsKeyringVault::new(KEYRING_SERVICE));
             let runtime = Arc::new(AppState::new(
                 &data_dir.join("state.sqlite3"),
@@ -258,7 +262,8 @@ pub fn run() {
                 diagnostics_dir,
             });
             tauri::async_runtime::spawn(scheduler(Arc::clone(&runtime)));
-            tauri::async_runtime::spawn(wake_monitor(Arc::clone(&runtime)));
+            tauri::async_runtime::spawn(wake_monitor(Arc::clone(&runtime), app.handle().clone()));
+            updates::start_update_monitor(app.handle().clone());
             start_ipc_listener(Arc::clone(&runtime));
             if let Err(error) = register_native_messaging_host() {
                 tracing::warn!(error = %error, "could not register Chrome native messaging host");
@@ -270,6 +275,8 @@ pub fn run() {
             if let WindowEvent::CloseRequested { api, .. } = event {
                 api.prevent_close();
                 let _ = window.hide();
+            } else if let WindowEvent::Focused(true) = event {
+                updates::check_after_resume(window.app_handle().clone());
             }
         })
         .invoke_handler(tauri::generate_handler![
@@ -284,6 +291,10 @@ pub fn run() {
             start_lastfm_authorization,
             finish_lastfm_authorization,
             export_diagnostics,
+            updates::software_update_status,
+            updates::check_for_software_update,
+            updates::download_software_update,
+            updates::install_software_update,
         ])
         .build(tauri::generate_context!())
         .expect("error while building Scrobble Bridge");
@@ -292,6 +303,7 @@ pub fn run() {
         #[cfg(target_os = "macos")]
         if let tauri::RunEvent::Reopen { .. } = event {
             show_main_window(app_handle);
+            updates::check_after_resume(app_handle.clone());
         }
         #[cfg(not(target_os = "macos"))]
         let _ = (app_handle, event);
@@ -504,7 +516,7 @@ fn process_ipc_request(payload: &str, runtime: &AppState) -> IpcResponse {
     }
 }
 
-async fn wake_monitor(runtime: Arc<AppState>) {
+async fn wake_monitor(runtime: Arc<AppState>, app: AppHandle) {
     let mut previous = Instant::now();
     let mut previous_wall_clock = SystemTime::now();
     let mut interval = tokio::time::interval(Duration::from_secs(30));
@@ -518,6 +530,7 @@ async fn wake_monitor(runtime: Arc<AppState>) {
             wall_clock.duration_since(previous_wall_clock).ok(),
         ) {
             runtime.trigger.notify_one();
+            updates::check_after_resume(app.clone());
         }
         previous = now;
         previous_wall_clock = wall_clock;

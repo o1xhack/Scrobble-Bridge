@@ -23,8 +23,12 @@ cargo clippy --workspace --all-targets -- -D warnings
 ## Change rules
 
 - Never commit a real Cookie, token, key, browser export, SQLite database or diagnostic bundle.
-- Add sanitized fixtures for every parser shape change; unknown upstream responses must fail closed.
-- Preserve outbox idempotency and crash-recovery tests when changing synchronization behavior.
+- Run the existing checks that cover the code you changed. A pull request does not need to add a new test merely because it is a pull request.
+- Add or change tests when behavior changes, a bug needs a regression guard, an external parser contract changes, or the release risk cannot be covered by existing tests. Keep tests focused on the behavior at risk.
+- Add sanitized fixtures when a parser shape changes; unknown upstream responses must fail closed.
+- Preserve the existing outbox idempotency and crash-recovery coverage when changing synchronization behavior.
+- Run the complete release matrix once for the release candidate and record the exact commands and real-device checks in the release notes/checklist instead of duplicating broad test-only commits across every pull request.
+- Routine dependency version updates are reviewed as one explicit release-preparation step. The repository keeps vulnerability alerts enabled but does not open recurring Dependabot version-update pull requests.
 - Any new Chrome permission needs a user-facing reason and a matching privacy-document update.
 - Keep desktop and Docker credential backends separate from the pure synchronization core.
 - Set both `SCROBBLE_LASTFM_API_KEY` and `SCROBBLE_LASTFM_SHARED_SECRET` only for authorized maintainer desktop builds; omit both for ordinary open-source development.

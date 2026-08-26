@@ -3,6 +3,7 @@
     "beforeBuildCommand": "pnpm build:tauri-assets"
   },
   "bundle": {
+    "createUpdaterArtifacts": true,
     "externalBin": ["binaries/scrobble-native-host"]
   }
 }

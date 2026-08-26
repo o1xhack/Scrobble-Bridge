@@ -198,9 +198,93 @@ textarea:focus-visible {
 }
 
 .dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.update-banner {
+  align-items: center;
+  background: linear-gradient(105deg, #edf8f1, #f9fcfa);
+  border: 1px solid #a9cdb7;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(24, 93, 57, 0.08);
   display: grid;
   gap: 14px;
-  grid-template-rows: auto minmax(0, 1fr);
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  padding: 14px 16px;
+}
+
+.update-icon {
+  align-items: center;
+  background: var(--accent);
+  border-radius: 12px;
+  color: white;
+  display: flex;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.update-copy {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.update-copy > small:first-child {
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.update-copy > strong {
+  font-size: 0.9rem;
+}
+
+.update-copy details {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.update-copy summary {
+  cursor: pointer;
+  font-weight: 700;
+  margin-top: 3px;
+}
+
+.update-copy details p {
+  line-height: 1.5;
+  margin: 6px 0 2px;
+  max-height: 120px;
+  overflow: auto;
+  white-space: pre-line;
+}
+
+.update-copy progress {
+  accent-color: var(--accent);
+  height: 7px;
+  margin-top: 5px;
+  max-width: 440px;
+  width: 100%;
+}
+
+.update-verified {
+  align-items: center;
+  color: var(--success);
+  display: inline-flex;
+  font-weight: 700;
+  gap: 5px;
+  margin-top: 3px;
+}
+
+.update-actions,
+.setting-actions {
+  align-items: center;
+  display: flex;
+  gap: 8px;
 }
 
 .connection-card {
@@ -518,6 +602,23 @@ textarea {
   margin: 0;
 }
 
+.update-setting {
+  min-height: 88px;
+}
+
+.update-setting .setting-copy {
+  gap: 3px;
+}
+
+.update-setting .setting-copy small {
+  display: block;
+}
+
+.update-setting .setting-error {
+  color: var(--danger);
+  margin-top: 3px;
+}
+
 .lastfm-setting {
   grid-template-rows: auto auto;
 }
@@ -806,6 +907,14 @@ footer > span.running {
   .connection-card {
     grid-template-columns: 1fr;
   }
+  .update-banner {
+    align-items: start;
+    grid-template-columns: 46px minmax(0, 1fr);
+  }
+  .update-actions {
+    grid-column: 2;
+    justify-self: start;
+  }
   .bridge-arrow {
     min-height: 24px;
   }
@@ -873,6 +982,13 @@ footer > span.running {
   .setting-row > :last-child {
     grid-column: 2;
     justify-self: start;
+  }
+  .update-banner {
+    grid-template-columns: 1fr;
+  }
+  .update-icon,
+  .update-actions {
+    grid-column: 1;
   }
   .provider-setting {
     grid-template-columns: 46px minmax(0, 1fr);

@@ -26,6 +26,7 @@
     CaretRight,
     CheckCircle,
     Clock,
+    DownloadSimple,
     Export,
     Gear,
     Key,
@@ -38,7 +39,7 @@
   import { onMount } from "svelte";
   import ActivityList from "./ActivityList.svelte";
   import ActivityStatus from "./ActivityStatus.svelte";
-  import { desktop, isDemoMode } from "./transport";
+  import { desktop, isDemoMode, type SoftwareUpdateStatus } from "./transport";
 
   type View = "dashboard" | "history" | "settings";
 
@@ -123,6 +124,27 @@
         "Export a private support package without Cookie or API secrets.",
       export: "Export diagnostics",
       savedTo: "Saved to",
+      softwareUpdates: "Software updates",
+      dailyUpdateBody:
+        "Checks automatically once a day. Updates are never downloaded or installed without your choice.",
+      currentVersion: "Current version",
+      lastUpdateCheck: "Last checked",
+      nextUpdateCheck: "Next automatic check",
+      checkForUpdates: "Check now",
+      checkingUpdates: "Checking…",
+      updateAvailable: "A new version is available",
+      updateAvailableBody: "Scrobble Bridge {version} is ready to download.",
+      downloadUpdate: "Download update",
+      downloadingUpdate: "Downloading…",
+      updateReady: "Downloaded and verified",
+      updateNowRestart: "Update now and restart",
+      installingUpdate: "Installing…",
+      later: "Later",
+      releaseNotes: "What’s new",
+      upToDate: "Scrobble Bridge is up to date.",
+      updateCheckFailed: "Could not check for updates.",
+      updateDownloadFailed: "Could not download the update.",
+      updateInstallFailed: "Could not install the update.",
       advanced: "Advanced recovery",
       advancedBody:
         "Manual credentials are only for recovery when the Chrome extension cannot connect.",
@@ -231,6 +253,26 @@
       diagnosticsBody: "导出不包含 Cookie 或 API 密钥的隐私安全支持包。",
       export: "导出诊断信息",
       savedTo: "已保存到",
+      softwareUpdates: "软件更新",
+      dailyUpdateBody: "每天自动检查一次；未经你选择，不会自动下载或安装更新。",
+      currentVersion: "当前版本",
+      lastUpdateCheck: "上次检查",
+      nextUpdateCheck: "下次自动检查",
+      checkForUpdates: "立即检查",
+      checkingUpdates: "正在检查…",
+      updateAvailable: "发现新版本",
+      updateAvailableBody: "Scrobble Bridge {version} 已可下载。",
+      downloadUpdate: "下载更新",
+      downloadingUpdate: "正在下载…",
+      updateReady: "已下载并验证",
+      updateNowRestart: "立即更新并重启",
+      installingUpdate: "正在安装…",
+      later: "稍后提醒",
+      releaseNotes: "更新说明",
+      upToDate: "Scrobble Bridge 已是最新版本。",
+      updateCheckFailed: "无法检查软件更新。",
+      updateDownloadFailed: "无法下载更新。",
+      updateInstallFailed: "无法安装更新。",
       advanced: "高级恢复",
       advancedBody: "只有 Chrome 扩展无法连接时，才需要手动填写凭据。",
       accountId: "账号标签",
@@ -288,6 +330,7 @@
   let view = $state<View>("dashboard");
   let status = $state<RuntimeStatus | null>(null);
   let recent = $state<ActivityPage>(EMPTY_PAGE);
+  let softwareUpdate = $state<SoftwareUpdateStatus | null>(null);
   let history = $state<ActivityPage>(EMPTY_PAGE);
   let historySearch = $state("");
   let historyStatus = $state<ActivityStatusValue | "">("");
@@ -296,6 +339,8 @@
   let launchAtLogin = $state(false);
   let busy = $state(false);
   let identityBusy = $state(false);
+  let updateBusy = $state(false);
+  let dismissedUpdateVersion = $state<string | null>(null);
   let identityRefreshAttempted = false;
   let message = $state("");
   let errorMessage = $state("");
@@ -317,9 +362,13 @@
       false,
     );
     void refreshAll();
+    void refreshSoftwareUpdateStatus();
     if (isDemoMode) launchAtLogin = true;
     else void isEnabled().then((value) => (launchAtLogin = value));
-    const timer = window.setInterval(() => void refreshAll(true), 10_000);
+    const timer = window.setInterval(() => {
+      void refreshAll(true);
+      void refreshSoftwareUpdateStatus(true);
+    }, 10_000);
     const finishAuthorizationOnReturn = () => {
       if (authorizationStarted && !busy) void finishLastFm(true);
     };
@@ -330,10 +379,16 @@
           view = "settings";
           showAdvanced = true;
         });
+    const unlistenUpdate = isDemoMode
+      ? null
+      : listen<SoftwareUpdateStatus>("software-update-changed", (event) => {
+          softwareUpdate = event.payload;
+        });
     return () => {
       window.clearInterval(timer);
       window.removeEventListener("focus", finishAuthorizationOnReturn);
       if (unlisten) void unlisten.then((dispose) => dispose());
+      if (unlistenUpdate) void unlistenUpdate.then((dispose) => dispose());
     };
   });
 
@@ -363,6 +418,60 @@
       if (!silent) errorMessage = "";
     } catch (error) {
       if (!silent) errorMessage = `${text.failedToLoad} ${String(error)}`;
+    }
+  }
+
+  async function refreshSoftwareUpdateStatus(silent = false) {
+    try {
+      softwareUpdate = await desktop.updateStatus();
+    } catch (error) {
+      if (!silent) errorMessage = `${text.updateCheckFailed} ${String(error)}`;
+    }
+  }
+
+  async function checkForUpdate() {
+    updateBusy = true;
+    message = "";
+    errorMessage = "";
+    try {
+      softwareUpdate = await desktop.checkForUpdate();
+      if (softwareUpdate.available_version) {
+        dismissedUpdateVersion = null;
+      } else {
+        message = text.upToDate;
+      }
+    } catch (error) {
+      await refreshSoftwareUpdateStatus(true);
+      errorMessage = `${text.updateCheckFailed} ${String(error)}`;
+    } finally {
+      updateBusy = false;
+    }
+  }
+
+  async function downloadUpdate() {
+    updateBusy = true;
+    message = "";
+    errorMessage = "";
+    try {
+      softwareUpdate = await desktop.downloadUpdate();
+    } catch (error) {
+      await refreshSoftwareUpdateStatus(true);
+      errorMessage = `${text.updateDownloadFailed} ${String(error)}`;
+    } finally {
+      updateBusy = false;
+    }
+  }
+
+  async function installUpdate() {
+    updateBusy = true;
+    message = "";
+    errorMessage = "";
+    try {
+      await desktop.installUpdate();
+    } catch (error) {
+      await refreshSoftwareUpdateStatus(true);
+      errorMessage = `${text.updateInstallFailed} ${String(error)}`;
+      updateBusy = false;
     }
   }
 
@@ -574,6 +683,11 @@
       : "—";
   }
 
+  function formatBytes(value: number) {
+    if (value < 1024 * 1024) return `${Math.round(value / 1024)} KB`;
+    return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+  }
+
   function phaseLabel(phase: RuntimePhase) {
     const labels: Record<Locale, Record<RuntimePhase, string>> = {
       en: {
@@ -678,6 +792,88 @@
 
   {#if view === "dashboard"}
     <section class="dashboard page-shell">
+      {#if softwareUpdate?.available_version && softwareUpdate.available_version !== dismissedUpdateVersion}
+        <section class="update-banner" aria-live="polite">
+          <span class="update-icon"
+            ><DownloadSimple size={24} weight="bold" /></span
+          >
+          <span class="update-copy">
+            <small>{text.updateAvailable}</small>
+            <strong
+              >{text.updateAvailableBody.replace(
+                "{version}",
+                softwareUpdate.available_version,
+              )}</strong
+            >
+            {#if softwareUpdate.notes}
+              <details>
+                <summary>{text.releaseNotes}</summary>
+                <p>{softwareUpdate.notes}</p>
+              </details>
+            {/if}
+            {#if softwareUpdate.phase === "downloading"}
+              <progress
+                max={softwareUpdate.total_bytes ?? 1}
+                value={softwareUpdate.downloaded_bytes}
+              ></progress>
+              <small
+                >{formatBytes(
+                  softwareUpdate.downloaded_bytes,
+                )}{#if softwareUpdate.total_bytes}
+                  / {formatBytes(softwareUpdate.total_bytes)}
+                {/if}</small
+              >
+            {:else if softwareUpdate.phase === "ready"}
+              <small class="update-verified"
+                ><CheckCircle
+                  size={14}
+                  weight="fill"
+                />{text.updateReady}</small
+              >
+            {/if}
+          </span>
+          <span class="update-actions">
+            {#if softwareUpdate.phase === "ready"}
+              <button
+                class="primary-button"
+                type="button"
+                disabled={updateBusy}
+                onclick={installUpdate}
+                ><ArrowsClockwise size={17} />{updateBusy
+                  ? text.installingUpdate
+                  : text.updateNowRestart}</button
+              >
+            {:else}
+              <button
+                class="primary-button"
+                type="button"
+                disabled={updateBusy ||
+                  softwareUpdate.phase === "downloading" ||
+                  softwareUpdate.phase === "installing" ||
+                  softwareUpdate.phase === "checking"}
+                onclick={downloadUpdate}
+                ><DownloadSimple size={17} />{softwareUpdate.phase ===
+                "downloading"
+                  ? text.downloadingUpdate
+                  : softwareUpdate.phase === "installing"
+                    ? text.installingUpdate
+                    : text.downloadUpdate}</button
+              >
+            {/if}
+            {#if softwareUpdate.phase !== "installing"}
+              <button
+                class="secondary-button"
+                type="button"
+                disabled={softwareUpdate.phase === "downloading"}
+                onclick={() =>
+                  (dismissedUpdateVersion =
+                    softwareUpdate?.available_version ?? null)}
+                >{text.later}</button
+              >
+            {/if}
+          </span>
+        </section>
+      {/if}
       <section class="connection-card" aria-label={text.connections}>
         <div
           class:disconnected={!status?.ytmusic_configured}
@@ -978,6 +1174,60 @@
       <section class="settings-section">
         <h2>{text.preferences}</h2>
         <div class="settings-card setting-list">
+          <div class="setting-row update-setting">
+            <span class="row-icon"><DownloadSimple size={21} /></span><span
+              class="setting-copy"
+              ><strong>{text.softwareUpdates}</strong>
+              <p>
+                {text.currentVersion}: {softwareUpdate?.current_version ?? "—"} ·
+                {text.dailyUpdateBody}
+              </p>
+              <small
+                >{text.lastUpdateCheck}: {formatDate(
+                  softwareUpdate?.last_checked_at,
+                )} · {text.nextUpdateCheck}: {formatDate(
+                  softwareUpdate?.next_check_at,
+                )}</small
+              >
+              {#if softwareUpdate?.error}<small class="setting-error"
+                  >{text.updateCheckFailed} {softwareUpdate.error}</small
+                >{/if}
+            </span>
+            <span class="setting-actions">
+              {#if softwareUpdate?.phase === "ready"}
+                <button
+                  class="primary-button"
+                  type="button"
+                  disabled={updateBusy}
+                  onclick={installUpdate}
+                  >{updateBusy
+                    ? text.installingUpdate
+                    : text.updateNowRestart}</button
+                >
+              {:else if softwareUpdate?.available_version}
+                <button
+                  class="primary-button"
+                  type="button"
+                  disabled={updateBusy ||
+                    softwareUpdate.phase === "downloading"}
+                  onclick={downloadUpdate}
+                  >{softwareUpdate.phase === "downloading"
+                    ? text.downloadingUpdate
+                    : text.downloadUpdate}</button
+                >
+              {:else}
+                <button
+                  class="secondary-button"
+                  type="button"
+                  disabled={updateBusy || softwareUpdate?.phase === "checking"}
+                  onclick={checkForUpdate}
+                  >{updateBusy || softwareUpdate?.phase === "checking"
+                    ? text.checkingUpdates
+                    : text.checkForUpdates}</button
+                >
+              {/if}
+            </span>
+          </div>
           <div class="setting-row">
             <span class="row-icon"><Browser size={21} /></span><span
               class="setting-copy"

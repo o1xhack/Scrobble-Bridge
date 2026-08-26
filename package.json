@@ -15,6 +15,7 @@
     "build": "pnpm -r build",
     "check": "pnpm docs:check && pnpm -r check",
     "docs:check": "node scripts/check-docs.mjs",
+    "version:set": "node scripts/set-version.mjs",
     "test": "pnpm -r test",
     "format": "pnpm -r format"
   }

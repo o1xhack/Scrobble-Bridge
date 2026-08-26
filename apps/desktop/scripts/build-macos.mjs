@@ -1,5 +1,12 @@
 import { execFileSync } from "node:child_process";
-import { cpSync, mkdirSync, rmSync, symlinkSync } from "node:fs";
+import {
+  cpSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  symlinkSync,
+} from "node:fs";
 import { resolve } from "node:path";
 import { createSigningEnvironment } from "./signing-environment.mjs";
 
@@ -21,6 +28,9 @@ function detectDeveloperIdIdentity() {
 
 const appRoot = resolve(import.meta.dirname, "..");
 const repositoryRoot = resolve(appRoot, "../..");
+const appVersion = JSON.parse(
+  readFileSync(resolve(appRoot, "src-tauri/tauri.conf.json"), "utf8"),
+).version;
 const requestedTarget = process.env.SCROBBLE_BUILD_TARGET?.trim();
 const signingIdentity =
   process.env.APPLE_SIGNING_IDENTITY?.trim() || detectDeveloperIdIdentity();
@@ -34,9 +44,38 @@ const tauriArguments = [
   "src-tauri/tauri.release.conf.json",
 ];
 if (requestedTarget) tauriArguments.push("--target", requestedTarget);
+const buildEnvironment = createSigningEnvironment(process.env, signingIdentity);
+const localUpdaterKey = resolve(
+  process.env.HOME ?? "",
+  ".codex-secrets/scrobble-bridge/updater.key",
+);
+if (
+  !buildEnvironment.TAURI_SIGNING_PRIVATE_KEY &&
+  existsSync(localUpdaterKey)
+) {
+  buildEnvironment.TAURI_SIGNING_PRIVATE_KEY = localUpdaterKey;
+  try {
+    buildEnvironment.TAURI_SIGNING_PRIVATE_KEY_PASSWORD = execFileSync(
+      "security",
+      [
+        "find-generic-password",
+        "-s",
+        "com.scrobblebridge.updater-signing",
+        "-a",
+        "updater-key-password",
+        "-w",
+      ],
+      { encoding: "utf8" },
+    ).trim();
+  } catch {
+    throw new Error(
+      "The local updater signing key exists, but its Keychain password is unavailable.",
+    );
+  }
+}
 execFileSync("pnpm", tauriArguments, {
   cwd: appRoot,
-  env: createSigningEnvironment(process.env, signingIdentity),
+  env: buildEnvironment,
   stdio: "inherit",
 });
 const bundleRoot = resolve(
@@ -46,6 +85,13 @@ const bundleRoot = resolve(
     : "target/release/bundle",
 );
 const appPath = resolve(bundleRoot, "macos/Scrobble Bridge.app");
+const updaterSource = `${appPath}.tar.gz`;
+const updaterSignatureSource = `${updaterSource}.sig`;
+if (!existsSync(updaterSource) || !existsSync(updaterSignatureSource)) {
+  throw new Error(
+    "The signed macOS updater archive and signature were not generated.",
+  );
+}
 if (signingIdentity) {
   execFileSync("codesign", ["--verify", "--deep", "--strict", appPath], {
     stdio: "inherit",
@@ -75,9 +121,17 @@ const architecture = requestedTarget?.startsWith("x86_64-")
   : requestedTarget?.startsWith("aarch64-") || process.arch === "arm64"
     ? "aarch64"
     : "x86_64";
+const updaterDirectory = resolve(bundleRoot, "updater");
+const updaterArtifact = resolve(
+  updaterDirectory,
+  `Scrobble Bridge_${appVersion}_${architecture}.app.tar.gz`,
+);
+mkdirSync(updaterDirectory, { recursive: true });
+cpSync(updaterSource, updaterArtifact, { force: true });
+cpSync(updaterSignatureSource, `${updaterArtifact}.sig`, { force: true });
 const output = resolve(
   bundleRoot,
-  `dmg/Scrobble Bridge_1.0.0_${architecture}.dmg`,
+  `dmg/Scrobble Bridge_${appVersion}_${architecture}.dmg`,
 );
 mkdirSync(resolve(bundleRoot, "dmg"), { recursive: true });
 execFileSync(

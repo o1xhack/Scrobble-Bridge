@@ -58,6 +58,10 @@ Checksums are published next to the installers. Do not download Scrobble Bridge 
 
 Closing the main window leaves the background service running. Reopen it from the Dock/menu bar, or choose **Quit** to stop it completely.
 
+### Software updates
+
+The desktop App checks the signed GitHub Release update manifest once a day, including after a due check is recovered from sleep or the App returns to the foreground. When a newer version is available, a prominent home-screen banner shows the release notes. Scrobble Bridge does not silently download or install it: choose **Download update**, wait for signature verification, then choose **Update now and restart**. A manual **Check now** action and the last/next check times remain available in Settings.
+
 ### Install on Windows
 
 1. Download the x64 setup executable from the [Releases page](https://github.com/o1xhack/Scrobble-Bridge/releases).
@@ -84,6 +88,7 @@ pnpm --filter @scrobble-bridge/extension build
 - **Local-first credentials.** macOS uses Keychain, Windows uses Credential Manager, and NAS credentials are encrypted at rest. Scrobble Bridge has no hosted account service or credential relay.
 - **Crash-safe and duplicate-aware.** A durable SQLite outbox, retry policy, recent-track reconciliation, and deterministic fingerprints protect pending plays through restarts and transient failures.
 - **Designed for long-running use.** Pause state survives restarts, sleep/wake triggers catch-up, expired authorization requires explicit recovery, and history gaps cannot permanently stop later synchronization.
+- **Signed, user-controlled updates.** The App checks daily, verifies each updater artifact with the project update key, and installs only after the user chooses to download and restart.
 - **Desktop or self-hosted.** Use a native app for the easiest setup or Docker on an always-on NAS.
 
 ## How it works

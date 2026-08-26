@@ -58,6 +58,10 @@ Scrobble Bridge 通过 [GitHub Releases](https://github.com/o1xhack/Scrobble-Bri
 
 关闭主窗口后，后台同步服务仍会运行。可以从 Dock / 菜单栏重新打开；选择 **退出** 才会完全停止。
 
+### 软件更新
+
+桌面 App 每天检查一次经过签名的 GitHub Release 更新清单；睡眠唤醒或 App 回到前台时，如果检查已到期也会补做。发现新版本后，主页会用醒目的横幅显示更新说明。Scrobble Bridge 不会静默下载或安装：用户先选择**下载更新**，等待签名验证通过，再选择**立即更新并重启**。设置页始终提供**立即检查**以及上次/下次检查时间。
+
 ### 在 Windows 安装
 
 1. 从 [Releases 页面](https://github.com/o1xhack/Scrobble-Bridge/releases) 下载 x64 安装程序。
@@ -84,6 +88,7 @@ pnpm --filter @scrobble-bridge/extension build
 - **凭据留在本机。**macOS 使用 Keychain，Windows 使用 Credential Manager，NAS 凭据经过静态加密。项目没有托管账号系统，也没有凭据中转服务器。
 - **崩溃恢复与防重复。**持久化 SQLite outbox、退避重试、Recent Tracks 对账和确定性 fingerprint 能在重启和临时故障期间保护待提交播放。
 - **适合长期后台运行。**暂停状态跨重启保留；睡眠唤醒后自动补跑；授权失效会要求明确恢复；一次历史间隙不会永久停止后续同步。
+- **签名验证、用户控制的更新。**App 每天检查一次，用项目更新公钥验证每个更新包，只有用户主动选择下载和重启后才会安装。
 - **桌面与自托管两种方式。**普通用户使用原生 App，常开环境可以部署到 Docker / NAS。
 
 ## 工作原理

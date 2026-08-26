@@ -66,4 +66,16 @@ describe("desktop command transport", () => {
 
     expect(invoke).toHaveBeenCalledWith("refresh_ytmusic_identity");
   });
+
+  it("keeps update download and installation as separate user actions", async () => {
+    vi.mocked(invoke).mockResolvedValue(undefined);
+
+    await desktop.checkForUpdate();
+    await desktop.downloadUpdate();
+    await desktop.installUpdate();
+
+    expect(invoke).toHaveBeenNthCalledWith(1, "check_for_software_update");
+    expect(invoke).toHaveBeenNthCalledWith(2, "download_software_update");
+    expect(invoke).toHaveBeenNthCalledWith(3, "install_software_update");
+  });
 });

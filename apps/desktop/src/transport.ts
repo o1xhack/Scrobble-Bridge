@@ -8,12 +8,31 @@ import type {
   YouTubeMusicAccountInfo,
 } from "@scrobble-bridge/ui";
 
-const demoEnabled =
-  import.meta.env.DEV &&
-  typeof window !== "undefined" &&
-  new URLSearchParams(window.location.search).has("demo");
+const demoParameters =
+  import.meta.env.DEV && typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search)
+    : null;
+const demoEnabled = demoParameters?.has("demo") ?? false;
+const demoUpdateEnabled = demoEnabled && demoParameters?.has("update");
 
 export const isDemoMode = demoEnabled;
+
+export type SoftwareUpdatePhase =
+  "idle" | "checking" | "available" | "downloading" | "ready" | "installing";
+
+export interface SoftwareUpdateStatus {
+  current_version: string;
+  phase: SoftwareUpdatePhase;
+  available_version: string | null;
+  notes: string | null;
+  published_at: string | null;
+  last_checked_at: string | null;
+  last_successful_check_at: string | null;
+  next_check_at: string | null;
+  downloaded_bytes: number;
+  total_bytes: number | null;
+  error: string | null;
+}
 
 const DEMO_TRACKS = [
   ["Sunset Drive", "Mila Orange", "dX3k_QDnzHE"],
@@ -104,6 +123,22 @@ const DEMO_STATUS: RuntimeStatus = {
   rejected: 1,
 };
 
+const DEMO_UPDATE_STATUS: SoftwareUpdateStatus = {
+  current_version: "1.0.0",
+  phase: demoUpdateEnabled ? "available" : "idle",
+  available_version: demoUpdateEnabled ? "1.0.1" : null,
+  notes: demoUpdateEnabled
+    ? "Improved sleep/wake recovery and update reliability.\nFixed a credential refresh edge case."
+    : null,
+  published_at: demoUpdateEnabled ? new Date().toISOString() : null,
+  last_checked_at: new Date().toISOString(),
+  last_successful_check_at: new Date().toISOString(),
+  next_check_at: new Date(Date.now() + 24 * 60 * 60_000).toISOString(),
+  downloaded_bytes: 0,
+  total_bytes: null,
+  error: null,
+};
+
 function demoActivity(args: {
   limit: number;
   offset: number;
@@ -129,6 +164,12 @@ function demoActivity(args: {
 function command<T>(name: string, args?: Record<string, unknown>): Promise<T> {
   if (!demoEnabled) return args ? invoke<T>(name, args) : invoke<T>(name);
   if (name === "status") return Promise.resolve(DEMO_STATUS as T);
+  if (
+    name === "software_update_status" ||
+    name === "check_for_software_update" ||
+    name === "download_software_update"
+  )
+    return Promise.resolve(DEMO_UPDATE_STATUS as T);
   if (name === "activity")
     return Promise.resolve(
       demoActivity(args as Parameters<typeof demoActivity>[0]) as T,
@@ -195,4 +236,10 @@ export const desktop = {
   startLastFm: () => command<string>("start_lastfm_authorization"),
   finishLastFm: () => command<void>("finish_lastfm_authorization"),
   exportDiagnostics: () => command<string>("export_diagnostics"),
+  updateStatus: () => command<SoftwareUpdateStatus>("software_update_status"),
+  checkForUpdate: () =>
+    command<SoftwareUpdateStatus>("check_for_software_update"),
+  downloadUpdate: () =>
+    command<SoftwareUpdateStatus>("download_software_update"),
+  installUpdate: () => command<void>("install_software_update"),
 };

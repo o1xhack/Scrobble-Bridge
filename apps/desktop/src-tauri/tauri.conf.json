@@ -25,6 +25,17 @@
       "csp": "default-src 'self'; connect-src ipc: http://ipc.localhost; img-src 'self' asset: http://asset.localhost https://i.ytimg.com; style-src 'self' 'unsafe-inline'"
     }
   },
+  "plugins": {
+    "updater": {
+      "endpoints": [
+        "https://github.com/o1xhack/Scrobble-Bridge/releases/latest/download/latest.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDI3NjA1OTdFRkM3NzA5NTkKUldSWkNYZjhmbGxnSjlkWks3UGJWRmlnaHlxUXYwYWQ1S1hyTzJ1R3pRM0FGMEpOOVVyRGgveDUK",
+      "windows": {
+        "installMode": "passive"
+      }
+    }
+  },
   "bundle": {
     "active": true,
     "targets": ["dmg", "nsis"],
