@@ -134,23 +134,35 @@ const output = resolve(
   `dmg/Scrobble Bridge_${appVersion}_${architecture}.dmg`,
 );
 mkdirSync(resolve(bundleRoot, "dmg"), { recursive: true });
-execFileSync(
-  "hdiutil",
-  [
-    "create",
-    "-volname",
-    "Scrobble Bridge",
-    "-srcfolder",
-    staging,
-    "-ov",
-    "-format",
-    "UDZO",
-    output,
-  ],
-  {
-    stdio: "inherit",
-  },
-);
+const hdiutilCreateArguments = [
+  "create",
+  "-volname",
+  "Scrobble Bridge",
+  "-srcfolder",
+  staging,
+  "-ov",
+  "-format",
+  "UDZO",
+  output,
+];
+for (let attempt = 1; attempt <= 3; attempt += 1) {
+  try {
+    execFileSync("hdiutil", hdiutilCreateArguments, { stdio: "inherit" });
+    break;
+  } catch (error) {
+    if (attempt === 3) throw error;
+    console.warn(
+      `hdiutil create failed on attempt ${attempt}; retrying after ${attempt * 2} seconds.`,
+    );
+    rmSync(output, { force: true });
+    Atomics.wait(
+      new Int32Array(new SharedArrayBuffer(4)),
+      0,
+      0,
+      attempt * 2_000,
+    );
+  }
+}
 if (signingIdentity) {
   execFileSync(
     "codesign",
