@@ -19,6 +19,7 @@ use scrobble_keyring::OsKeyringVault;
 use serde::Serialize;
 use tauri::{
     AppHandle, Emitter, Manager, State, WindowEvent,
+    image::Image,
     menu::{Menu, MenuItem},
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
 };
@@ -329,7 +330,13 @@ fn build_tray(app: &mut tauri::App) -> tauri::Result<()> {
     )?;
     let quit = MenuItem::with_id(app, "quit", "退出 / Quit", true, None::<&str>)?;
     let menu = Menu::with_items(app, &[&open, &sync, &pause, &diagnostics, &quit])?;
-    TrayIconBuilder::new()
+    // Tauri's icon-less macOS tray item is rendered as an anonymous gray
+    // placeholder dot. Give the single tray item an explicit identity and a
+    // short title so it is recognizable and cannot look like a stale process.
+    TrayIconBuilder::with_id("main")
+        .icon(Image::new_owned(vec![0, 0, 0, 0], 1, 1))
+        .title("SB")
+        .tooltip("Scrobble Bridge")
         .menu(&menu)
         .show_menu_on_left_click(false)
         .on_menu_event(|app, event| handle_tray_menu(app, event.id.as_ref()))
