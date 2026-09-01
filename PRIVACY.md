@@ -32,3 +32,7 @@ The runtime keeps the minimum history window and outbox required for idempotent 
 ## Important limitation
 
 Closing Chrome does not invalidate the last snapshot already stored by the runtime. If Google expires or revokes that credential, synchronization stops and asks the user to reconnect after Chrome is opened again. Scrobble Bridge does not attempt to bypass account security or promise permanent authentication.
+
+## Chrome Web Store Limited Use disclosure
+
+Scrobble Bridge's use and transfer of information received from Google services adheres to the [Chrome Web Store User Data Policy](https://developer.chrome.com/docs/webstore/program-policies/user-data-faq), including the Limited Use requirements. Authentication information, account identifiers, and YouTube Music page data are used only to provide the user-facing credential-refresh and scrobbling features described above. They are not used for advertising, profiling, creditworthiness, lending, or any unrelated purpose; they are not sold; and they are not made available for human reading except when the user explicitly provides specific diagnostic material for support or when required for security or legal compliance.

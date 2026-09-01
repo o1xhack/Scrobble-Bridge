@@ -33,12 +33,16 @@ export default defineConfig({
         }
         const iconDirectory = resolve(root, "dist/icons");
         await mkdir(iconDirectory, { recursive: true });
-        for (const size of [32, 64, 128]) {
+        for (const size of [32, 64]) {
           await copyFile(
             resolve(root, `../desktop/src-tauri/icons/${size}x${size}.png`),
             resolve(iconDirectory, `${size}.png`),
           );
         }
+        await copyFile(
+          resolve(root, "icons/128.png"),
+          resolve(iconDirectory, "128.png"),
+        );
         await cp(resolve(root, "_locales"), resolve(root, "dist/_locales"), {
           recursive: true,
         });
