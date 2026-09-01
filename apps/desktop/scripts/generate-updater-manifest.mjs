@@ -30,9 +30,10 @@ export function createUpdaterManifest({
     const signature = readFileSync(signaturePath, "utf8").trim();
     if (!signature)
       throw new Error(`Updater signature is empty: ${signaturePath}`);
+    const releaseAssetName = basename(artifactPath).replaceAll(" ", ".");
     manifestPlatforms[platform] = {
       signature,
-      url: `${releaseBase}/${encodeURIComponent(basename(artifactPath))}`,
+      url: `${releaseBase}/${encodeURIComponent(releaseAssetName)}`,
     };
   }
 

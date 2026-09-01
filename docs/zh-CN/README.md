@@ -23,7 +23,7 @@
 <p align="center">🌐 <a href="../../README.md">English</a> · <strong>简体中文</strong></p>
 
 <p align="center">
-  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_aarch64.dmg"><strong>下载 Apple Silicon Mac 版本 →</strong></a>
+  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg"><strong>下载 Apple Silicon Mac 版本 →</strong></a>
   &nbsp;·&nbsp;
   <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/tag/v1.0.0">查看 v1.0.0 全部下载</a>
 </p>
@@ -38,9 +38,9 @@ Scrobble Bridge 把你的 YouTube Music 收听历史同步到 Last.fm。它可�
 
 | 平台              | 下载                                                                                                                                                 | 状态                                   |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| Apple Silicon Mac | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_aarch64.dmg)                                         | 推荐；已在 Apple Silicon 上运行测试    |
-| Intel Mac         | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_x86_64.dmg)                                          | Beta；已打包，未在 Intel 硬件测试      |
-| Windows 10/11 x64 | [实验性安装程序](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_x64-setup.exe)                              | Experimental；未经运行测试且未签名     |
+| Apple Silicon Mac | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg)                                            | 推荐；已在 Apple Silicon 上运行测试    |
+| Intel Mac         | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_x86_64.dmg)                                             | Beta；已打包，未在 Intel 硬件测试      |
+| Windows 10/11 x64 | [实验性安装程序](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_x64-setup.exe)                                 | Experimental；未经运行测试且未签名     |
 
 [校验和与 v1.0.0 全部文件](https://github.com/o1xhack/Scrobble-Bridge/releases/tag/v1.0.0)可以在 Release 页面找到。请不要从第三方镜像下载 Scrobble Bridge。
 

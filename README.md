@@ -23,7 +23,7 @@
 <p align="center">🌐 <strong>English</strong> · <a href="docs/zh-CN/README.md">简体中文</a></p>
 
 <p align="center">
-  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_aarch64.dmg"><strong>Download for Apple silicon Mac →</strong></a>
+  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg"><strong>Download for Apple silicon Mac →</strong></a>
   &nbsp;·&nbsp;
   <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/tag/v1.0.0">All v1.0.0 downloads</a>
 </p>
@@ -38,9 +38,9 @@ Scrobble Bridge keeps your YouTube Music listening history in sync with Last.fm.
 
 | Platform               | Download                                                                                                                                             | Status                                          |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| Mac with Apple silicon | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_aarch64.dmg)                                         | Recommended; runtime-tested on Apple silicon    |
-| Intel Mac              | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_x86_64.dmg)                                          | Beta; packaged but not tested on Intel hardware |
-| Windows 10/11 x64      | [Experimental installer](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_x64-setup.exe)                    | Experimental; untested and unsigned             |
+| Mac with Apple silicon | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg)                                            | Recommended; runtime-tested on Apple silicon    |
+| Intel Mac              | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_x86_64.dmg)                                             | Beta; packaged but not tested on Intel hardware |
+| Windows 10/11 x64      | [Experimental installer](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_x64-setup.exe)                       | Experimental; untested and unsigned             |
 
 [Checksums and all v1.0.0 assets](https://github.com/o1xhack/Scrobble-Bridge/releases/tag/v1.0.0) are available on the release page. Do not download Scrobble Bridge from third-party mirrors.
 

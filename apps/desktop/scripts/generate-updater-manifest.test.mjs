@@ -23,7 +23,7 @@ describe("updater manifest", () => {
 
     expect(manifest.platforms["darwin-aarch64"]).toEqual({
       signature: "signature",
-      url: "https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_aarch64.app.tar.gz",
+      url: "https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.app.tar.gz",
     });
     expect(readFileSync(`${artifact}.sig`, "utf8")).toContain("signature");
   });
