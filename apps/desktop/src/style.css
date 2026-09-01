@@ -67,6 +67,11 @@ main {
   width: 38px;
 }
 
+.brand-mark svg {
+  height: 24px;
+  width: 24px;
+}
+
 .brand > span:last-child,
 .runtime-state > span,
 .provider-copy,

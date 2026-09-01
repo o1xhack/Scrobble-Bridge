@@ -341,9 +341,20 @@
 >
 
 <header>
-  <a class="brand" href="/" aria-label="Scrobble Bridge"
-    ><span>SB</span>Scrobble Bridge</a
-  >
+  <a class="brand" href="/" aria-label="Scrobble Bridge">
+    <span aria-hidden="true">
+      <svg viewBox="0 0 36 36">
+        <path
+          d="M4 18c3.1-7.2 6.2-7.2 9.3 0s6.2 7.2 9.3 0 6.2-7.2 9.3 0"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-width="4"
+        />
+      </svg>
+    </span>
+    Scrobble Bridge
+  </a>
   <div class="header-tools">
     <label class="language"
       ><span>{text.language}</span><select

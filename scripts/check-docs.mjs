@@ -8,15 +8,19 @@ const documents = ["README.md", "docs/zh-CN/README.md"];
 const requiredText = {
   "README.md": [
     "docs/zh-CN/README.md",
-    "https://github.com/o1xhack/Scrobble-Bridge/releases",
+    "https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/",
     "Download",
-    "Mac App Store",
+    "runtime-tested only on an Apple silicon Mac",
+    "Windows and Docker/NAS builds are **Experimental**",
+    "Windows installer is unsigned",
   ],
   "docs/zh-CN/README.md": [
     "../../README.md",
-    "https://github.com/o1xhack/Scrobble-Bridge/releases",
+    "https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/",
     "下载",
-    "Mac App Store",
+    "只在 Apple Silicon Mac 上做过运行测试",
+    "Windows 和 Docker/NAS 版本均为 **Experimental（实验性版本）**",
+    "Windows 安装程序未签名",
   ],
 };
 

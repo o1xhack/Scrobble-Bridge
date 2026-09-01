@@ -23,35 +23,32 @@
 <p align="center">🌐 <a href="../../README.md">English</a> · <strong>简体中文</strong></p>
 
 <p align="center">
-  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases"><strong>下载 macOS 或 Windows 版本 →</strong></a>
+  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_aarch64.dmg"><strong>下载 Apple Silicon Mac 版本 →</strong></a>
   &nbsp;·&nbsp;
-  <a href="#dockernas">部署到 NAS</a>
+  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/tag/v1.0.0">查看 v1.0.0 全部下载</a>
 </p>
 
 Scrobble Bridge 把你的 YouTube Music 收听历史同步到 Last.fm。它可以在 Mac 或 Windows 电脑后台常驻，也可以在 NAS 上作为 Docker 服务持续运行。只要一次播放进入同一 YouTube Music 账号的云端历史，即使音乐来自手机、平板、电视或另一台电脑，Scrobble Bridge 也可以发现并同步。
 
-> **发布状态：**开源 MVP 1.0 的代码和可复现构建工件已经完成，但首个公开二进制 GitHub Release 尚未发布。上面的永久下载入口会在剩余公开发布门禁获得授权后提供经过签名和公证的 v1.0.0 安装包。GitHub Actions 工件是测试工件，不等于公开 Release。
+> **平台状态：**v1.0.0 只在 Apple Silicon Mac 上做过运行测试。Intel Mac 版本已经完成打包，但没有在 Intel 硬件上运行验证。Windows 和 Docker/NAS 版本均为 **Experimental（实验性版本）**，尚未做对应平台的运行测试；Windows 安装程序未签名。
 
 > Scrobble Bridge 是非官方独立项目，与 Google、YouTube 或 Last.fm 没有隶属或合作关系。YouTube Music 没有提供本项目所需的公开历史 API；当前实现使用浏览器凭据访问内部 Web endpoint，因此可能随上游变化而需要维护。播放时间根据历史窗口推算，不应当视为精确收听日志。
 
 ## 下载
 
-Scrobble Bridge 通过 [GitHub Releases](https://github.com/o1xhack/Scrobble-Bridge/releases) 直接分发。macOS 版本**不需要**进入 Mac App Store，也不要求用户拥有 App Store 账号或购买记录。
+| 平台              | 下载                                                                                                                                                 | 状态                                   |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| Apple Silicon Mac | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_aarch64.dmg)                                         | 推荐；已在 Apple Silicon 上运行测试    |
+| Intel Mac         | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_x86_64.dmg)                                          | Beta；已打包，未在 Intel 硬件测试      |
+| Windows 10/11 x64 | [实验性安装程序](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_x64-setup.exe)                              | Experimental；未经运行测试且未签名     |
 
-| 平台              | 从最新 Release 下载                   | 公开分发门禁                                  |
-| ----------------- | ------------------------------------- | --------------------------------------------- |
-| Apple Silicon Mac | `Scrobble Bridge_1.0.0_aarch64.dmg`   | Developer ID 签名、Apple 公证、ticket stapled |
-| Intel Mac         | `Scrobble Bridge_1.0.0_x86_64.dmg`    | Developer ID 签名、Apple 公证、ticket stapled |
-| Windows 10/11 x64 | `Scrobble Bridge_1.0.0_x64-setup.exe` | Authenticode 签名有效                         |
-| Chrome 扩展       | Chrome Web Store 页面                 | 正式扩展 ID 已写入桌面安装包允许列表          |
-
-每个正式安装包旁边都会提供校验和。请不要从第三方镜像下载 Scrobble Bridge。
+[校验和与 v1.0.0 全部文件](https://github.com/o1xhack/Scrobble-Bridge/releases/tag/v1.0.0)可以在 Release 页面找到。请不要从第三方镜像下载 Scrobble Bridge。
 
 ### 在 macOS 安装
 
 1. 打开 [Releases 页面](https://github.com/o1xhack/Scrobble-Bridge/releases)，根据 Mac 芯片下载对应 DMG。
 2. 打开 DMG，把 **Scrobble Bridge** 拖入 **Applications / 应用程序**。
-3. 从应用程序目录打开 Scrobble Bridge。正式公开版本会使用 Developer ID 签名并通过 Apple 公证，适合站外直接分发。
+3. 从应用程序目录打开 Scrobble Bridge。
 4. Chrome Web Store 页面上线后，从官方页面安装 Scrobble Bridge 扩展。
 5. 在 Chrome 打开 YouTube Music，然后在扩展里启用凭据自动刷新。
 6. 在桌面 App 点击 **前往 Last.fm 授权**，在浏览器允许 Scrobble Bridge 访问。普通用户不需要填写 API Key 或 Shared Secret。
@@ -63,6 +60,8 @@ Scrobble Bridge 通过 [GitHub Releases](https://github.com/o1xhack/Scrobble-Bri
 桌面 App 每天检查一次经过签名的 GitHub Release 更新清单；睡眠唤醒或 App 回到前台时，如果检查已到期也会补做。发现新版本后，主页会用醒目的横幅显示更新说明。Scrobble Bridge 不会静默下载或安装：用户先选择**下载更新**，等待签名验证通过，再选择**立即更新并重启**。设置页始终提供**立即检查**以及上次/下次检查时间。
 
 ### 在 Windows 安装
+
+> **Experimental（实验性版本）：**Windows 版本尚未做运行测试，v1.0.0 安装程序也没有代码签名。Windows 可能显示“未知发布者”提示；只建议愿意测试早期版本的用户使用。
 
 1. 从 [Releases 页面](https://github.com/o1xhack/Scrobble-Bridge/releases) 下载 x64 安装程序。
 2. 运行当前用户安装程序，从开始菜单启动 Scrobble Bridge。
@@ -106,10 +105,11 @@ flowchart LR
 
 ## 选择运行方式
 
-| 方式         | 适合场景                            | Chrome 关闭后                                       | 凭据保存位置                                    |
-| ------------ | ----------------------------------- | --------------------------------------------------- | ----------------------------------------------- |
-| 桌面 App     | 日常使用的 Mac 或 Windows PC        | 使用最后一个有效快照继续同步；Chrome 下次打开后刷新 | Keychain / Credential Manager                   |
-| Docker / NAS | Synology、QNAP、TrueNAS、家庭服务器 | 使用最后一个有效快照继续同步；扩展重新连接后刷新    | `/data/credentials.enc`，ChaCha20-Poly1305 加密 |
+| 方式                | 状态         | Chrome 关闭后                                       | 凭据保存位置                                    |
+| ------------------- | ------------ | --------------------------------------------------- | ----------------------------------------------- |
+| macOS 桌面 App      | 推荐         | 使用最后一个有效快照继续同步；Chrome 下次打开后刷新 | Keychain                                        |
+| Windows 桌面 App    | Experimental | 使用最后一个有效快照继续同步；Chrome 下次打开后刷新 | Credential Manager                              |
+| Docker / NAS        | Experimental | 使用最后一个有效快照继续同步；扩展重新连接后刷新    | `/data/credentials.enc`，ChaCha20-Poly1305 加密 |
 
 Chrome 不需要一直打开。保存的 YouTube 凭据真正失效后，Scrobble Bridge 会进入 `needs_attention`；重新打开 Chrome、登录 YouTube Music 并让扩展刷新即可。项目不会声称提供“永久 Cookie”。
 
@@ -117,11 +117,11 @@ Chrome 不需要一直打开。保存的 YouTube 凭据真正失效后，Scrobbl
 
 - Rust 同步核心：有序历史窗口、baseline 保护、间隙处理、重复播放和确定性 fingerprint。
 - SQLite outbox：崩溃恢复、Last.fm Recent Tracks 对照、指数退避和每日备份。
-- Tauri 2 + Svelte 桌面 App：macOS 12+、Windows 10/11 x64、英文/简体中文 UI、菜单栏/系统托盘、登录启动和睡眠唤醒恢复。
+- Tauri 2 + Svelte 桌面 App：macOS 12+ 与实验性的 Windows 10/11 x64 支持、英文/简体中文 UI、菜单栏/系统托盘、登录启动和睡眠唤醒恢复。
 - Chrome Manifest V3 扩展：按需申请最小权限、自动识别 YouTube Music 账号、多账号保护和中英文 UI。
 - Native Messaging：只允许精确扩展 origin，并使用操作系统凭据库。
 - Last.fm 浏览器授权：官方安装包包含项目 application；源码构建保留高级自备 application 方式。
-- Docker / NAS：`linux/amd64`、`linux/arm64`、非 root、只读根文件系统、健康检查、持久化数据和 HTTPS 设备配对。
+- 实验性的 Docker / NAS：`linux/amd64`、`linux/arm64`、非 root、只读根文件系统、健康检查、持久化数据和 HTTPS 设备配对。
 
 实现详情见 [1.0 实施状态](../1.0-implementation-status.md)、[1.0 QA 报告](../1.0-qa-report.md)和[产品与技术架构](../1.0-product-architecture-plan.md)。
 
@@ -170,9 +170,7 @@ pnpm --filter @scrobble-bridge/desktop tauri build --bundles nsis \
 | [Docker / NAS 部署](../docker-nas.md)               | 自托管部署和 HTTPS 配对        |
 | [隐私说明](../../PRIVACY.md)                        | 数据处理和网络目的地           |
 | [安全策略](../../SECURITY.md)                       | 漏洞报告和受支持版本           |
-| [Chrome Web Store 上架准备](../chrome-web-store.md) | 权限、商店文案和正式 ID 交接   |
 | [1.0 QA 报告](../1.0-qa-report.md)                  | 已验证场景和剩余真机测试       |
-| [发布清单](../release-checklist.md)                 | 签名、公证、真机 QA 和发布门禁 |
 
 ## 隐私、限制和 API 条款
 

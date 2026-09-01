@@ -27,7 +27,7 @@ scrobble-engine = { version = "1.0.0", path = "../../../crates/scrobble-engine" 
 scrobble-storage = { version = "1.0.0", path = "../../../crates/scrobble-storage" }
 serde.workspace = true
 serde_json.workspace = true
-tauri = { version = "2.11.5", features = ["tray-icon"] }
+tauri = { version = "2.11.5", features = ["image-png", "tray-icon"] }
 tauri-plugin-autostart = "2.5.1"
 tauri-plugin-opener = "2.5.4"
 tokio.workspace = true

@@ -23,35 +23,32 @@
 <p align="center">🌐 <strong>English</strong> · <a href="docs/zh-CN/README.md">简体中文</a></p>
 
 <p align="center">
-  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases"><strong>Download for macOS or Windows →</strong></a>
+  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_aarch64.dmg"><strong>Download for Apple silicon Mac →</strong></a>
   &nbsp;·&nbsp;
-  <a href="#docker--nas">Run on a NAS</a>
+  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/tag/v1.0.0">All v1.0.0 downloads</a>
 </p>
 
 Scrobble Bridge keeps your YouTube Music listening history in sync with Last.fm. It can stay in the background on a Mac or Windows PC, or run continuously as a Docker service on a NAS. Once a play reaches the cloud history of the same YouTube Music account, Scrobble Bridge can discover it even if the music was played on a phone, tablet, TV, or another computer.
 
-> **Release status:** the open-source MVP 1.0 code and reproducible build artifacts are complete, but the first public binary GitHub Release has not been published yet. The permanent download link above will serve the notarized/signed v1.0.0 installers after the remaining public-release gates are approved. GitHub Actions artifacts are test artifacts, not a public release.
+> **Platform status:** v1.0.0 has been runtime-tested only on an Apple silicon Mac. The Intel Mac build is packaged but has not been tested on Intel hardware. Windows and Docker/NAS builds are **Experimental** and have not received platform runtime testing. The Windows installer is unsigned.
 
 > Scrobble Bridge is an independent project and is not affiliated with Google, YouTube, or Last.fm. YouTube Music does not provide the public history API this project needs. The current integration uses browser credentials with an internal web endpoint and may require maintenance when upstream behavior changes. Play times are inferred from history windows and should not be treated as an exact listening log.
 
 ## Download
 
-Scrobble Bridge is distributed directly through [GitHub Releases](https://github.com/o1xhack/Scrobble-Bridge/releases). The macOS app does **not** require the Mac App Store, an App Store account, or an App Store purchase.
+| Platform               | Download                                                                                                                                             | Status                                          |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| Mac with Apple silicon | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_aarch64.dmg)                                         | Recommended; runtime-tested on Apple silicon    |
+| Intel Mac              | [DMG](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_x86_64.dmg)                                          | Beta; packaged but not tested on Intel hardware |
+| Windows 10/11 x64      | [Experimental installer](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble%20Bridge_1.0.0_x64-setup.exe)                    | Experimental; untested and unsigned             |
 
-| Platform               | Download from the latest release      | Public distribution gate                                    |
-| ---------------------- | ------------------------------------- | ----------------------------------------------------------- |
-| Mac with Apple silicon | `Scrobble Bridge_1.0.0_aarch64.dmg`   | Developer ID signed, Apple notarized, ticket stapled        |
-| Intel Mac              | `Scrobble Bridge_1.0.0_x86_64.dmg`    | Developer ID signed, Apple notarized, ticket stapled        |
-| Windows 10/11 x64      | `Scrobble Bridge_1.0.0_x64-setup.exe` | Valid Authenticode signature                                |
-| Chrome extension       | Chrome Web Store listing              | Production extension ID connected to the desktop installers |
-
-Checksums are published next to the installers. Do not download Scrobble Bridge from third-party mirrors.
+[Checksums and all v1.0.0 assets](https://github.com/o1xhack/Scrobble-Bridge/releases/tag/v1.0.0) are available on the release page. Do not download Scrobble Bridge from third-party mirrors.
 
 ### Install on macOS
 
 1. Open the [Releases page](https://github.com/o1xhack/Scrobble-Bridge/releases) and download the DMG for your Mac.
 2. Open the DMG and drag **Scrobble Bridge** to **Applications**.
-3. Open Scrobble Bridge from Applications. The public build will be signed with Developer ID and notarized by Apple for direct distribution.
+3. Open Scrobble Bridge from Applications.
 4. Install the Scrobble Bridge Chrome extension from its official Chrome Web Store listing when that listing is live.
 5. Open YouTube Music in Chrome, then enable automatic credential refresh in the extension.
 6. In the desktop app, choose **Authorize with Last.fm** and approve Scrobble Bridge in the browser. You do not need to enter an API key or shared secret.
@@ -63,6 +60,8 @@ Closing the main window leaves the background service running. Reopen it from th
 The desktop App checks the signed GitHub Release update manifest once a day, including after a due check is recovered from sleep or the App returns to the foreground. When a newer version is available, a prominent home-screen banner shows the release notes. Scrobble Bridge does not silently download or install it: choose **Download update**, wait for signature verification, then choose **Update now and restart**. A manual **Check now** action and the last/next check times remain available in Settings.
 
 ### Install on Windows
+
+> **Experimental:** the Windows build has not received runtime testing and the v1.0.0 installer is unsigned. Windows may show an unknown-publisher warning. Use it only if you are comfortable testing an early build.
 
 1. Download the x64 setup executable from the [Releases page](https://github.com/o1xhack/Scrobble-Bridge/releases).
 2. Run the per-user installer and launch Scrobble Bridge from the Start menu.
@@ -106,10 +105,11 @@ The Chrome extension requests YouTube access only after you explicitly enable au
 
 ## Choose where to run it
 
-| Mode         | Best for                             | When Chrome is closed                                                            | Credential storage                                   |
-| ------------ | ------------------------------------ | -------------------------------------------------------------------------------- | ---------------------------------------------------- |
-| Desktop app  | A daily Mac or Windows PC            | Continues with the last valid snapshot; refreshes the next time Chrome opens     | Keychain / Credential Manager                        |
-| Docker / NAS | Synology, QNAP, TrueNAS, home server | Continues with the last valid snapshot; refreshes after the extension reconnects | `/data/credentials.enc`, ChaCha20-Poly1305 encrypted |
+| Mode                     | Status       | When Chrome is closed                                                            | Credential storage                                   |
+| ------------------------ | ------------ | -------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| macOS desktop app        | Recommended  | Continues with the last valid snapshot; refreshes the next time Chrome opens     | Keychain                                             |
+| Windows desktop app      | Experimental | Continues with the last valid snapshot; refreshes the next time Chrome opens     | Credential Manager                                   |
+| Docker / NAS             | Experimental | Continues with the last valid snapshot; refreshes after the extension reconnects | `/data/credentials.enc`, ChaCha20-Poly1305 encrypted |
 
 Chrome does not need to remain open. When the saved YouTube credential truly expires, Scrobble Bridge enters `needs_attention`; open Chrome, sign in to YouTube Music again, and let the extension refresh it. The project does not claim to provide a permanent Cookie.
 
@@ -117,11 +117,11 @@ Chrome does not need to remain open. When the saved YouTube credential truly exp
 
 - Rust synchronization core with ordered history windows, baseline protection, gap handling, repeated-play support, and deterministic fingerprints.
 - SQLite outbox with crash recovery, Last.fm recent-track checks, exponential backoff, and daily backup.
-- Tauri 2 + Svelte desktop app for macOS 12+ and Windows 10/11 x64, with English and Simplified Chinese UI, menu bar/system tray operation, launch at login, and sleep/wake recovery.
+- Tauri 2 + Svelte desktop app for macOS 12+ and experimental Windows 10/11 x64 support, with English and Simplified Chinese UI, menu bar/system tray operation, launch at login, and sleep/wake recovery.
 - Chrome Manifest V3 extension with opt-in minimal permissions, automatic YouTube Music account detection, multi-account safeguards, and English/Simplified Chinese UI.
 - Native Messaging bridge with an exact extension-origin allowlist and operating-system credential storage.
 - Last.fm browser authorization using the bundled application identity; source builds retain an advanced bring-your-own-application fallback.
-- Docker/NAS runtime for `linux/amd64` and `linux/arm64`, with a non-root user, read-only root filesystem, health endpoints, persistent storage, and HTTPS device pairing.
+- Experimental Docker/NAS runtime for `linux/amd64` and `linux/arm64`, with a non-root user, read-only root filesystem, health endpoints, persistent storage, and HTTPS device pairing.
 
 See the [1.0 implementation status](docs/1.0-implementation-status.md), [1.0 QA report](docs/1.0-qa-report.md), and [product and technical architecture](docs/1.0-product-architecture-plan.md).
 
@@ -170,9 +170,7 @@ Source builds do not contain the official Last.fm API key or shared secret. With
 | [Docker / NAS deployment](docs/docker-nas.md)            | Self-hosted deployment and HTTPS pairing                    |
 | [Privacy](PRIVACY.md)                                    | Data handling and network destinations                      |
 | [Security policy](SECURITY.md)                           | Vulnerability reporting and supported versions              |
-| [Chrome Web Store preparation](docs/chrome-web-store.md) | Permissions, listing copy, and production-ID handoff        |
 | [1.0 QA report](docs/1.0-qa-report.md)                   | Verified scenarios and remaining real-device tests          |
-| [Release checklist](docs/release-checklist.md)           | Signing, notarization, hardware QA, and publication gates   |
 
 ## Privacy, limitations, and API terms
 

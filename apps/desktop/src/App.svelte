@@ -739,7 +739,17 @@
       onclick={() => openView("dashboard")}
       aria-label="Scrobble Bridge"
     >
-      <span class="brand-mark">SB</span>
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 36 36">
+          <path
+            d="M4 18c3.1-7.2 6.2-7.2 9.3 0s6.2 7.2 9.3 0 6.2-7.2 9.3 0"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-width="4"
+          />
+        </svg>
+      </span>
       <span><strong>Scrobble Bridge</strong><small>{text.runtime}</small></span>
     </button>
     {#if status}

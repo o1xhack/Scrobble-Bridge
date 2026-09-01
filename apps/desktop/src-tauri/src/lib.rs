@@ -330,15 +330,19 @@ fn build_tray(app: &mut tauri::App) -> tauri::Result<()> {
     )?;
     let quit = MenuItem::with_id(app, "quit", "退出 / Quit", true, None::<&str>)?;
     let menu = Menu::with_items(app, &[&open, &sync, &pause, &diagnostics, &quit])?;
-    // Tauri's icon-less macOS tray item is rendered as an anonymous gray
-    // placeholder dot. Give the single tray item an explicit identity and a
-    // short title so it is recognizable and cannot look like a stale process.
-    TrayIconBuilder::with_id("main")
-        .icon(Image::new_owned(vec![0, 0, 0, 0], 1, 1))
-        .title("SB")
+    #[cfg(target_os = "macos")]
+    let tray_icon = Image::from_bytes(include_bytes!("../icons/tray-icon.png"))?;
+    #[cfg(not(target_os = "macos"))]
+    let tray_icon = Image::from_bytes(include_bytes!("../icons/32x32.png"))?;
+
+    let tray = TrayIconBuilder::with_id("main")
+        .icon(tray_icon)
         .tooltip("Scrobble Bridge")
-        .menu(&menu)
-        .show_menu_on_left_click(false)
+        .menu(&menu);
+    #[cfg(target_os = "macos")]
+    let tray = tray.icon_as_template(true);
+
+    tray.show_menu_on_left_click(false)
         .on_menu_event(|app, event| handle_tray_menu(app, event.id.as_ref()))
         .on_tray_icon_event(|tray, event| {
             if matches!(

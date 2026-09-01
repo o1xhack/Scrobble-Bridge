@@ -39,6 +39,10 @@ header > span {
   justify-content: center;
   width: 34px;
 }
+header > span svg {
+  height: 22px;
+  width: 22px;
+}
 header .identity {
   display: grid;
   flex: 1;

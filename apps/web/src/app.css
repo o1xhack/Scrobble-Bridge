@@ -65,6 +65,11 @@ header p {
   letter-spacing: 0.05em;
   width: 2rem;
 }
+
+.brand span svg {
+  height: 1.35rem;
+  width: 1.35rem;
+}
 main {
   margin: 0 auto;
   max-width: 1180px;
