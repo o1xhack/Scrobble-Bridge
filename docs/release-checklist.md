@@ -38,7 +38,7 @@ The current delivery is an open-source MVP. Native Windows QA, target NAS hardwa
 - [x] Installed App writes source credentials to Keychain, preserves them across restart, does not repopulate the Cookie field, and emits no credential value to unified logs
 - [x] macOS Intel DMG cross-builds as x86_64 and mounts successfully
 - [x] Both `.app` bundles pass `codesign --verify --deep --strict` with Developer ID and Hardened Runtime
-- [ ] Apple notarization accepted and ticket stapled
+- [x] Apple notarization accepted and tickets stapled for both Apple Silicon and Intel Apps and DMGs
 - [ ] macOS Intel DMG runtime/install smoke on Rosetta or Intel hardware
 - [x] Windows x64 release desktop and Native Messaging PE binaries cross-build with the intended subsystems
 - [ ] Windows 10/11 x64 NSIS installs per-user, launches, registers Chrome host and removes its registration on uninstall
@@ -110,7 +110,8 @@ The current delivery is an open-source MVP. Native Windows QA, target NAS hardwa
 - [x] Privacy disclosures match the implemented extension permissions, storage and network destinations
 - [x] Current Chrome distribution is explicitly documented as developer-mode sideloading
 - [ ] Chrome Web Store listing reviewed and submission separately authorized
-- [ ] Git tag, GitHub Release, GHCR push and store submission each receive separate authorization
+- [x] v1.0.0 Git tag and GitHub Release publication explicitly authorized
+- [ ] GHCR push separately authorized
 
 ## Test policy
 
