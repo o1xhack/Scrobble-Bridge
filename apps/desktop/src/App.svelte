@@ -29,12 +29,15 @@
     DownloadSimple,
     Export,
     Gear,
+    Globe,
     Key,
     MagnifyingGlass,
     Pause,
     Play,
+    SquaresFour,
     WarningCircle,
     X,
+    XLogo,
   } from "phosphor-svelte";
   import { onMount } from "svelte";
   import ActivityList from "./ActivityList.svelte";
@@ -42,6 +45,10 @@
   import { desktop, isDemoMode, type SoftwareUpdateStatus } from "./transport";
 
   type View = "dashboard" | "history" | "settings";
+
+  const PROJECT_WEBSITE = "https://scrobble-bridge.o1xhack.com/";
+  const PORTFOLIO_WEBSITE = "https://app.o1xhack.com/";
+  const X_PROFILE = "https://x.com/o1xhack";
 
   const COPY = {
     en: {
@@ -93,6 +100,14 @@
       settingsTitle: "Settings",
       settingsBody:
         "Connections, background behavior, language, and recovery tools.",
+      about: "About",
+      projectWebsite: "Scrobble Bridge website",
+      projectWebsiteBody: "Downloads, setup, privacy, and project information.",
+      portfolioWebsite: "More apps by o1x",
+      portfolioWebsiteBody: "The official home for all apps and projects.",
+      xProfile: "o1xhack on X",
+      xProfileBody: "Product news and development updates.",
+      openLink: "Open",
       connections: "Connections",
       refreshAccount: "Refresh account name",
       refreshing: "Refreshing…",
@@ -224,6 +239,14 @@
       noResults: "没有符合条件的歌曲",
       settingsTitle: "设置",
       settingsBody: "统一管理连接、后台运行、语言和恢复工具。",
+      about: "关于",
+      projectWebsite: "Scrobble Bridge 官网",
+      projectWebsiteBody: "查看下载、使用说明、隐私政策和项目信息。",
+      portfolioWebsite: "o1x 的更多 App",
+      portfolioWebsiteBody: "汇总所有 App 和项目的个人展示官网。",
+      xProfile: "X 上的 o1xhack",
+      xProfileBody: "产品消息和开发进展。",
+      openLink: "打开",
       connections: "服务连接",
       refreshAccount: "刷新账号名称",
       refreshing: "正在刷新…",
@@ -626,6 +649,10 @@
     } finally {
       busy = false;
     }
+  }
+
+  async function openExternal(url: string) {
+    if (!isDemoMode) await openUrl(url);
   }
 
   async function finishLastFm(silent = false) {
@@ -1052,6 +1079,48 @@
           <p>{text.settingsBody}</p></span
         >
       </div>
+
+      <section class="settings-section about-section">
+        <h2>{text.about}</h2>
+        <div class="settings-card setting-list">
+          <div class="setting-row about-link-row">
+            <span class="row-icon"><Globe size={21} /></span><span
+              class="setting-copy"
+              ><strong>{text.projectWebsite}</strong>
+              <p>{text.projectWebsiteBody}</p></span
+            ><button
+              class="secondary-button"
+              type="button"
+              onclick={() => void openExternal(PROJECT_WEBSITE)}
+              >{text.openLink}<ArrowRight size={17} /></button
+            >
+          </div>
+          <div class="setting-row about-link-row">
+            <span class="row-icon"><SquaresFour size={21} /></span><span
+              class="setting-copy"
+              ><strong>{text.portfolioWebsite}</strong>
+              <p>{text.portfolioWebsiteBody}</p></span
+            ><button
+              class="secondary-button"
+              type="button"
+              onclick={() => void openExternal(PORTFOLIO_WEBSITE)}
+              >{text.openLink}<ArrowRight size={17} /></button
+            >
+          </div>
+          <div class="setting-row about-link-row">
+            <span class="row-icon"><XLogo size={21} /></span><span
+              class="setting-copy"
+              ><strong>{text.xProfile}</strong>
+              <p>{text.xProfileBody}</p></span
+            ><button
+              class="secondary-button"
+              type="button"
+              onclick={() => void openExternal(X_PROFILE)}
+              >{text.openLink}<ArrowRight size={17} /></button
+            >
+          </div>
+        </div>
+      </section>
 
       <section class="settings-section">
         <h2>{text.connections}</h2>

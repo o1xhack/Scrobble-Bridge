@@ -18,6 +18,8 @@ export const POPUP_COPY = {
     enableRefresh: "Enable automatic refresh",
     refreshNow: "Refresh credentials now",
     removeAccess: "Remove YouTube Music access",
+    website: "Website",
+    privacyPolicy: "Privacy",
     privacy:
       "Access is requested only when you enable automatic refresh and is limited to music.youtube.com plus the parent youtube.com cookie domain required by Chrome. Cookie values go directly to your selected runtime and are never stored by this extension.",
     revokeNote:
@@ -52,6 +54,8 @@ export const POPUP_COPY = {
     enableRefresh: "启用自动刷新",
     refreshNow: "立即刷新凭据",
     removeAccess: "移除 YouTube Music 访问权限",
+    website: "官网",
+    privacyPolicy: "隐私政策",
     privacy:
       "只有在你启用自动刷新时才会请求权限，范围仅限 music.youtube.com 以及 Chrome 读取认证 Cookie 所需的父域 youtube.com。Cookie 值会直接发送到你选择的运行端，本扩展不会保存。",
     revokeNote:

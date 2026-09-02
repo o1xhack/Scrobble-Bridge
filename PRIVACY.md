@@ -1,5 +1,7 @@
 # Privacy
 
+Canonical published policy: <https://scrobble-bridge.o1xhack.com/privacy>
+
 Scrobble Bridge is local-first software. The project does not operate an account service, analytics endpoint, credential relay, or hosted sync database.
 
 ## Data processed
@@ -32,6 +34,10 @@ The runtime keeps the minimum history window and outbox required for idempotent 
 ## Important limitation
 
 Closing Chrome does not invalidate the last snapshot already stored by the runtime. If Google expires or revokes that credential, synchronization stops and asks the user to reconnect after Chrome is opened again. Scrobble Bridge does not attempt to bypass account security or promise permanent authentication.
+
+## Contact
+
+For privacy questions or support, open an issue in the [Scrobble Bridge repository](https://github.com/o1xhack/Scrobble-Bridge/issues) or email [app@yuxiaow.com](mailto:app@yuxiaow.com).
 
 ## Chrome Web Store Limited Use disclosure
 

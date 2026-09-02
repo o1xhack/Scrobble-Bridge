@@ -9,9 +9,9 @@ Scrobble Bridge 的 Chrome 扩展目前支持开发者模式安装。以下内�
 - 分类：Productivity / Music
 - 单一用途：把用户主动授权的 YouTube Music 登录快照安全传给同机 Scrobble Bridge 桌面应用，或用户明确配对的自有 NAS。
 - 支持语言：English、简体中文。
-- 主页：`https://github.com/o1xhack/Scrobble-Bridge`
+- 主页：`https://scrobble-bridge.o1xhack.com/`
 - 支持页面：`https://github.com/o1xhack/Scrobble-Bridge/issues`
-- 隐私政策：`https://github.com/o1xhack/Scrobble-Bridge/blob/main/PRIVACY.md`
+- 隐私政策：`https://scrobble-bridge.o1xhack.com/privacy`
 
 ## 商店描述
 

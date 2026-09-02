@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 
 interface Manifest {
   manifest_version: number;
+  homepage_url: string;
   permissions: string[];
   optional_permissions: string[];
   optional_host_permissions: string[];
@@ -16,6 +17,9 @@ describe("Manifest V3 privacy boundary", () => {
     ) as Manifest;
 
     expect(manifest.manifest_version).toBe(3);
+    expect(manifest.homepage_url).toBe(
+      "https://scrobble-bridge.o1xhack.com/",
+    );
     expect(manifest.permissions).toEqual([
       "alarms",
       "nativeMessaging",

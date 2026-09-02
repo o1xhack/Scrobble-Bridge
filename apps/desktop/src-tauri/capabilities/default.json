@@ -10,7 +10,10 @@
       "identifier": "opener:allow-open-url",
       "allow": [
         { "url": "https://www.last.fm/" },
-        { "url": "https://www.last.fm/api/auth/*" }
+        { "url": "https://www.last.fm/api/auth/*" },
+        { "url": "https://scrobble-bridge.o1xhack.com/" },
+        { "url": "https://app.o1xhack.com/" },
+        { "url": "https://x.com/o1xhack" }
       ]
     }
   ]

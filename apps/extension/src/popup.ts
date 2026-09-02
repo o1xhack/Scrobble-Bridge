@@ -144,6 +144,8 @@ function applyCopy(): void {
   revokeYouTubeButton.textContent = text.removeAccess;
   setText("privacy-note", text.privacy);
   setText("revoke-note", text.revokeNote);
+  setText("website-link", text.website);
+  setText("privacy-link", text.privacyPolicy);
 }
 
 function renderState(): void {

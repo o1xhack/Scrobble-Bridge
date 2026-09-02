@@ -23,6 +23,8 @@
 <p align="center">🌐 <strong>English</strong> · <a href="docs/zh-CN/README.md">简体中文</a></p>
 
 <p align="center">
+  <a href="https://scrobble-bridge.o1xhack.com"><strong>Official website</strong></a>
+  &nbsp;·&nbsp;
   <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg"><strong>Download for Apple silicon Mac →</strong></a>
   &nbsp;·&nbsp;
   <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/tag/v1.0.0">All v1.0.0 downloads</a>
@@ -168,7 +170,7 @@ Source builds do not contain the official Last.fm API key or shared secret. With
 | [Simplified Chinese README](docs/zh-CN/README.md)        | Chinese product overview, download, installation, and setup |
 | [Extension and credential connection](docs/extension.md) | Desktop/NAS extension flow and permission boundaries        |
 | [Docker / NAS deployment](docs/docker-nas.md)            | Self-hosted deployment and HTTPS pairing                    |
-| [Privacy](PRIVACY.md)                                    | Data handling and network destinations                      |
+| [Privacy](https://scrobble-bridge.o1xhack.com/privacy)   | Data handling and network destinations                      |
 | [Security policy](SECURITY.md)                           | Vulnerability reporting and supported versions              |
 | [1.0 QA report](docs/1.0-qa-report.md)                   | Verified scenarios and remaining real-device tests          |
 
