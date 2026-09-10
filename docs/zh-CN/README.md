@@ -22,7 +22,13 @@
 
 <p align="center">🌐 <a href="../../README.md">English</a> · <strong>简体中文</strong></p>
 
-<p align="center"><a href="https://scrobble-bridge.o1xhack.com">项目官网</a></p>
+<p align="center">
+  <a href="https://scrobble-bridge.o1xhack.com">项目官网</a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg"><strong>下载 Mac 版（Apple Silicon）</strong></a>
+  &nbsp;·&nbsp;
+  <a href="https://chromewebstore.google.com/detail/pajhbkokjhgdekhhjpcfoijbjhejjfke"><strong>Chrome 扩展 — 待审核</strong></a>
+</p>
 
 Scrobble Bridge 把你的 YouTube Music 收听历史同步到 Last.fm。它可以在 Mac 或 Windows 电脑后台常驻，也可以在 NAS 上作为 Docker 服务持续运行。只要一次播放进入同一 YouTube Music 账号的云端历史，即使音乐来自手机、平板、电视或另一台电脑，Scrobble Bridge 也可以发现并同步。
 
@@ -57,11 +63,13 @@ flowchart LR
 
 - **[下载 Mac 版（Apple Silicon）](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg)**
 - **[Chrome 扩展 — 待审核](https://chromewebstore.google.com/detail/pajhbkokjhgdekhhjpcfoijbjhejjfke)**：已提交审核，暂时无法安装；发布前商店页面可能无法访问。
+- **[Windows 10/11 x64 — Experimental（实验性）](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_x64-setup.exe)**：未经运行测试，安装程序未签名。
+- **[Docker / NAS — Experimental（实验性）](../docker-nas.md)**：自托管部署，未经运行测试。
 
 扩展上线且兼容的桌面安装包发布后，即可完成商店版连接设置。
 
 <details>
-<summary>其他平台下载、校验和与 macOS 安装步骤</summary>
+<summary>其他平台与安装设置：Intel Mac、Windows、Docker/NAS 和校验和</summary>
 
 | 平台              | 下载                                                                                                                                                 | 状态                                   |
 | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
@@ -81,6 +89,27 @@ flowchart LR
 6. 在桌面 App 点击 **前往 Last.fm 授权**，在浏览器允许 Scrobble Bridge 访问。普通用户不需要填写 API Key 或 Shared Secret。
 
 关闭主窗口后，后台同步服务仍会运行。可以从 Dock / 菜单栏重新打开；选择 **退出** 才会完全停止。
+
+### Windows 安装
+
+> **Experimental（实验性版本）：**Windows 版本尚未做运行测试，v1.0.0 安装程序也没有代码签名。Windows 可能显示“未知发布者”提示；只建议愿意测试早期版本的用户使用。
+
+1. 从 [Releases 页面](https://github.com/o1xhack/Scrobble-Bridge/releases) 下载 x64 安装程序。
+2. 运行当前用户安装程序，从开始菜单启动 Scrobble Bridge。
+3. 安装官方 Chrome 扩展，连接 YouTube Music，并在桌面 App 完成 Last.fm 授权。
+4. 关闭窗口后 Scrobble Bridge 会留在系统托盘；从托盘菜单选择 **退出** 才会停止。
+
+### Docker / NAS
+
+```bash
+git clone https://github.com/o1xhack/Scrobble-Bridge.git
+cd Scrobble-Bridge
+docker compose -f deploy/docker/compose.yaml up -d --build
+docker compose -f deploy/docker/compose.yaml exec scrobble-bridge \
+  sh -c 'cat /data/secrets/admin.token'
+```
+
+打开 `http://NAS_ADDRESS:8787` 完成设置。不要把这个 HTTP 端口直接暴露到公网；Chrome 配对必须使用可信 HTTPS reverse proxy 或 Tailscale Serve。完整说明见 [Docker / NAS 部署](../docker-nas.md)。
 
 </details>
 
@@ -110,18 +139,7 @@ Chrome 不需要一直打开。保存的 YouTube 凭据真正失效后，Scrobbl
 </details>
 
 <details>
-<summary>Windows 安装与软件更新</summary>
-
-### Windows 安装
-
-> **Experimental（实验性版本）：**Windows 版本尚未做运行测试，v1.0.0 安装程序也没有代码签名。Windows 可能显示“未知发布者”提示；只建议愿意测试早期版本的用户使用。
-
-1. 从 [Releases 页面](https://github.com/o1xhack/Scrobble-Bridge/releases) 下载 x64 安装程序。
-2. 运行当前用户安装程序，从开始菜单启动 Scrobble Bridge。
-3. 安装官方 Chrome 扩展，连接 YouTube Music，并在桌面 App 完成 Last.fm 授权。
-4. 关闭窗口后 Scrobble Bridge 会留在系统托盘；从托盘菜单选择 **退出** 才会停止。
-
-### 软件更新
+<summary>软件更新</summary>
 
 桌面 App 每天检查一次经过签名的 GitHub Release 更新清单；睡眠唤醒或 App 回到前台时，如果检查已到期也会补做。发现新版本后，主页会用醒目的横幅显示更新说明。Scrobble Bridge 不会静默下载或安装：用户先选择**下载更新**，等待签名验证通过，再选择**立即更新并重启**。设置页始终提供**立即检查**以及上次/下次检查时间。
 
@@ -139,21 +157,6 @@ corepack enable
 pnpm install --frozen-lockfile
 pnpm --filter @scrobble-bridge/extension build
 ```
-
-</details>
-
-<details>
-<summary>Docker / NAS</summary>
-
-```bash
-git clone https://github.com/o1xhack/Scrobble-Bridge.git
-cd Scrobble-Bridge
-docker compose -f deploy/docker/compose.yaml up -d --build
-docker compose -f deploy/docker/compose.yaml exec scrobble-bridge \
-  sh -c 'cat /data/secrets/admin.token'
-```
-
-打开 `http://NAS_ADDRESS:8787` 完成设置。不要把这个 HTTP 端口直接暴露到公网；Chrome 配对必须使用可信 HTTPS reverse proxy 或 Tailscale Serve。完整说明见 [Docker / NAS 部署](../docker-nas.md)。
 
 </details>
 
