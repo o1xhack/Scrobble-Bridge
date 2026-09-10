@@ -28,6 +28,8 @@
   <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg"><strong>Download for Apple silicon Mac →</strong></a>
   &nbsp;·&nbsp;
   <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/tag/v1.0.0">All v1.0.0 downloads</a>
+  &nbsp;·&nbsp;
+  <a href="https://chromewebstore.google.com/detail/pajhbkokjhgdekhhjpcfoijbjhejjfke">Chrome Web Store — pending review</a>
 </p>
 
 Scrobble Bridge keeps your YouTube Music listening history in sync with Last.fm. It can stay in the background on a Mac or Windows PC, or run continuously as a Docker service on a NAS. Once a play reaches the cloud history of the same YouTube Music account, Scrobble Bridge can discover it even if the music was played on a phone, tablet, TV, or another computer.
@@ -70,9 +72,11 @@ The desktop App checks the signed GitHub Release update manifest once a day, inc
 3. Install the official Chrome extension, connect YouTube Music, and authorize Last.fm in the desktop app.
 4. Closing the window leaves Scrobble Bridge in the system tray; choose **Quit** from the tray menu to stop it.
 
-### Chrome extension before the store listing
+### Chrome extension — pending review
 
-The public Chrome Web Store listing is the recommended installation path. Until its production ID is assigned and included in the desktop installers, the extension is available only for source/developer testing. Do not treat the store-upload ZIP as a general sideload package: Chrome assigns a different identity outside the store unless the development manifest is used.
+The extension has been submitted to the [Chrome Web Store](https://chromewebstore.google.com/detail/pajhbkokjhgdekhhjpcfoijbjhejjfke) and is **pending review**. This is its permanent listing link; the page may be unavailable until publication, and store installation is not available yet.
+
+Until publication and release of a compatible desktop installer, use the extension only for source/developer testing. Do not treat the store-upload ZIP as a general sideload package: Chrome assigns a different identity outside the store unless the development manifest is used.
 
 For development, build the extension and load `apps/extension/dist` from `chrome://extensions`:
 

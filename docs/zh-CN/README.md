@@ -26,6 +26,8 @@
   <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg"><strong>下载 Apple Silicon Mac 版本 →</strong></a>
   &nbsp;·&nbsp;
   <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/tag/v1.0.0">查看 v1.0.0 全部下载</a>
+  &nbsp;·&nbsp;
+  <a href="https://chromewebstore.google.com/detail/pajhbkokjhgdekhhjpcfoijbjhejjfke">Chrome Web Store — 待审核</a>
 </p>
 
 Scrobble Bridge 把你的 YouTube Music 收听历史同步到 Last.fm。它可以在 Mac 或 Windows 电脑后台常驻，也可以在 NAS 上作为 Docker 服务持续运行。只要一次播放进入同一 YouTube Music 账号的云端历史，即使音乐来自手机、平板、电视或另一台电脑，Scrobble Bridge 也可以发现并同步。
@@ -68,9 +70,11 @@ Scrobble Bridge 把你的 YouTube Music 收听历史同步到 Last.fm。它可�
 3. 安装官方 Chrome 扩展，连接 YouTube Music，并在桌面 App 完成 Last.fm 授权。
 4. 关闭窗口后 Scrobble Bridge 会留在系统托盘；从托盘菜单选择 **退出** 才会停止。
 
-### Chrome 商店上线之前
+### Chrome 扩展 — 待审核
 
-Chrome Web Store 是面向普通用户的推荐安装路径。在正式扩展 ID 分配并写入桌面安装包之前，扩展只适合源码/开发测试。不要把用于 Chrome Web Store 的 ZIP 当作普通侧载安装包：如果不使用开发 manifest，Chrome 会在商店外为它分配不同的扩展身份。
+扩展已提交至 [Chrome Web Store](https://chromewebstore.google.com/detail/pajhbkokjhgdekhhjpcfoijbjhejjfke)，目前**待审核**。这是固定的商店链接；正式发布前页面可能无法访问，暂时还不能从商店安装。
+
+在扩展上线且兼容的桌面安装包发布之前，扩展只适合源码/开发测试。不要把用于 Chrome Web Store 的 ZIP 当作普通侧载安装包：如果不使用开发 manifest，Chrome 会在商店外为它分配不同的扩展身份。
 
 开发测试可以构建扩展，然后在 `chrome://extensions` 加载 `apps/extension/dist`：
 
