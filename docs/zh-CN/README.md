@@ -27,7 +27,7 @@
   &nbsp;·&nbsp;
   <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg"><strong>下载 Mac 版（Apple Silicon）</strong></a>
   &nbsp;·&nbsp;
-  <a href="https://chromewebstore.google.com/detail/pajhbkokjhgdekhhjpcfoijbjhejjfke"><strong>Chrome 扩展 — 待审核</strong></a>
+  <a href="https://chromewebstore.google.com/detail/scrobble-bridge-youtube-m/pajhbkokjhgdekhhjpcfoijbjhejjfke"><strong>安装 Chrome 扩展</strong></a>
 </p>
 
 Scrobble Bridge 把你的 YouTube Music 收听历史同步到 Last.fm。它可以在 Mac 或 Windows 电脑后台常驻，也可以在 NAS 上作为 Docker 服务持续运行。只要一次播放进入同一 YouTube Music 账号的云端历史，即使音乐来自手机、平板、电视或另一台电脑，Scrobble Bridge 也可以发现并同步。
@@ -62,7 +62,7 @@ flowchart LR
 ## 下载
 
 - **[下载 Mac 版（Apple Silicon）](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg)**
-- **[Chrome 扩展 — 待审核](https://chromewebstore.google.com/detail/pajhbkokjhgdekhhjpcfoijbjhejjfke)**：已提交审核，暂时无法安装；发布前商店页面可能无法访问。
+- **[安装 Chrome 扩展](https://chromewebstore.google.com/detail/scrobble-bridge-youtube-m/pajhbkokjhgdekhhjpcfoijbjhejjfke)**：从 Chrome Web Store 安装。
 - **[Windows 10/11 x64 — Experimental（实验性）](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_x64-setup.exe)**：未经运行测试，安装程序未签名。
 - **[Docker / NAS — Experimental（实验性）](../docker-nas.md)**：自托管部署，未经运行测试。
 
@@ -84,7 +84,7 @@ flowchart LR
 1. 打开 [Releases 页面](https://github.com/o1xhack/Scrobble-Bridge/releases)，根据 Mac 芯片下载对应 DMG。
 2. 打开 DMG，把 **Scrobble Bridge** 拖入 **Applications / 应用程序**。
 3. 从应用程序目录打开 Scrobble Bridge。
-4. Chrome Web Store 页面上线后，从官方页面安装 Scrobble Bridge 扩展。
+4. 从官方 Chrome Web Store 页面安装 Scrobble Bridge 扩展。
 5. 在 Chrome 打开 YouTube Music，然后在扩展里启用凭据自动刷新。
 6. 在桌面 App 点击 **前往 Last.fm 授权**，在浏览器允许 Scrobble Bridge 访问。普通用户不需要填写 API Key 或 Shared Secret。
 

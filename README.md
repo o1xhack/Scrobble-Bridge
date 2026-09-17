@@ -27,7 +27,7 @@
   &nbsp;·&nbsp;
   <a href="https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg"><strong>Mac download (Apple silicon)</strong></a>
   &nbsp;·&nbsp;
-  <a href="https://chromewebstore.google.com/detail/pajhbkokjhgdekhhjpcfoijbjhejjfke"><strong>Chrome extension — pending review</strong></a>
+  <a href="https://chromewebstore.google.com/detail/scrobble-bridge-youtube-m/pajhbkokjhgdekhhjpcfoijbjhejjfke"><strong>Install the Chrome extension</strong></a>
 </p>
 
 Scrobble Bridge keeps your YouTube Music listening history in sync with Last.fm. It can stay in the background on a Mac or Windows PC, or run continuously as a Docker service on a NAS. Once a play reaches the cloud history of the same YouTube Music account, Scrobble Bridge can discover it even if the music was played on a phone, tablet, TV, or another computer.
@@ -62,7 +62,7 @@ The Chrome extension requests YouTube access only after you explicitly enable au
 ## Download
 
 - **[Download for Mac (Apple silicon)](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_aarch64.dmg)**
-- **[Chrome extension — pending review](https://chromewebstore.google.com/detail/pajhbkokjhgdekhhjpcfoijbjhejjfke)**: submitted for review, not yet available to install; the listing may be unavailable until publication.
+- **[Install the Chrome extension](https://chromewebstore.google.com/detail/scrobble-bridge-youtube-m/pajhbkokjhgdekhhjpcfoijbjhejjfke)** from the Chrome Web Store.
 - **[Windows 10/11 x64 — Experimental](https://github.com/o1xhack/Scrobble-Bridge/releases/download/v1.0.0/Scrobble.Bridge_1.0.0_x64-setup.exe)**: not runtime-tested; installer unsigned.
 - **[Docker / NAS — Experimental](docs/docker-nas.md)**: self-hosted deployment; not runtime-tested.
 
@@ -84,7 +84,7 @@ Store-based setup requires both the published extension and a compatible desktop
 1. Open the [Releases page](https://github.com/o1xhack/Scrobble-Bridge/releases) and download the DMG for your Mac.
 2. Open the DMG and drag **Scrobble Bridge** to **Applications**.
 3. Open Scrobble Bridge from Applications.
-4. Install the Scrobble Bridge Chrome extension from its official Chrome Web Store listing when that listing is live.
+4. Install the Scrobble Bridge Chrome extension from the official Chrome Web Store listing.
 5. Open YouTube Music in Chrome, then enable automatic credential refresh in the extension.
 6. In the desktop app, choose **Authorize with Last.fm** and approve Scrobble Bridge in the browser. You do not need to enter an API key or shared secret.
 
